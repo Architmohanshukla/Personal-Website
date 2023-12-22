@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archit Mohan Shukla - Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥼</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap">  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tillana&display=swap">
+</head>
+<body>
+    <nav class="navigation">
+        <!-- Left Section with Logo -->
+        <div class="left-section">
+            <!-- Your stylized logo with a link to the landing page -->
+            <a href="#landing" class="nav-link" id="logoLink" onclick="toggleSection('landing')">
+                <div>
+                    <span class="logoText">Archit Mohan Shukla</span>
+                </div>
+            </a>
+        </div>
+        <!-- Right Section with Navigation Links -->
+        <div class="right-section">
+            <ul>
+                <li><a href="#about" class="nav-link" onclick="toggleSection('about')">About</a></li>
+                <li><a href="#portfolio" class="nav-link" onclick="toggleSection('portfolio')">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link" onclick="toggleSection('contact')">Contact</a></li>
+                <li><a href="#research" class="nav-link" onclick="toggleSection('research')">Research</a></li>
+                <li><a href="#interests" class="nav-link" onclick="toggleSection('interests')">Interests</a></li>
+                <li class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Theme">
+                    <div class="moon" id="moonIcon" onclick="toggleTheme()"></div>
+                    <div class="sun" id="sunIcon" onclick="toggleTheme()"></div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Sections -->
+    <main>
+        <!-- Landing Page Section -->
+        <section id="landing" class="content-section">
+            <div class="landing-content">
+                <h1>Welcome to My Portfolio</h1>
+                <p>I'm Archit Mohan Shukla, a passionate web developer and designer. Explore my work and get to know more about me.</p>
+            </div>
+        </section>
+
+        <!-- Example About Me Section -->
+        <section id="about" class="content-section hidden">
+            <h2>About Me</h2>
+            <p>Your introduction goes here...</p>
+        </section>
+
+        <!-- Example Portfolio Section -->
+        <section id="portfolio" class="content-section hidden">
+            <h2>Portfolio</h2>
+            <div class="portfolio-item">
+                <h3>Project 1</h3>
+                <p>Description of your project...</p>
+            </div>
+            <!-- Add more portfolio items as needed -->
+        </section>
+
+        <!-- Example Contact Section -->
+        <section id="contact" class="content-section hidden">
+            <h2>Contact</h2>
+            <p>You can reach me at HAVE TO DESIGN THIS</p>
+            <!-- Add your contact form or information here -->
+        </section>
+
+        <!-- Add more sections for Research and Interests as needed -->
+        <section id="research" class="content-section hidden">
+            <h2>Research</h2>
+            <p>Your research details go here...</p>
+        </section>
+
+        <section id="interests" class="content-section hidden">
+            <h2>Interests</h2>
+            <p>Your interests details go here...</p>
+        </section>
+
+        <!-- Scroll to Top Button -->
+        <div id="scrollToTop" onclick="scrollToTop()" title="Scroll to Top">
+            &#8593;
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <!-- Update the text and add your own style class -->
+        <p>&copy; 2023 Archit ❤️</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

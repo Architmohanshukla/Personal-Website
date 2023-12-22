@@ -1,0 +1,289 @@
+/* Define CSS variables for easy customization */
+:root {
+    --font-family-logo: 'Tillana', sans-serif;
+    --font-size-logo: 2em;
+    --logo-color: #3498db; /* Light blue for dark theme */
+    --light-theme-bg: #ecf0f1; /* Light blueish grey */
+    --light-theme-text: #333;
+    --dark-theme-bg: #2c3e50; /* Dark greyish blue for dark theme */
+    --dark-theme-text: #fff;
+}
+
+/* Global styles */
+body {
+    font-family: 'Comic Sans MS', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--dark-theme-text);
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #ecf0f1;
+}
+
+ /* Dark theme styles for sections */
+ body.dark-theme {
+    background-color: var(--dark-theme-bg); /* Background color for dark theme */
+    color: var(--dark-theme-text);
+}
+
+/* Left section styles */
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Logo styles */
+.logo {
+    font-family: var(--font-family-logo);
+    font-size: var(--font-size-logo);
+    color: var(--logo-color);
+    margin-right: 10px;
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+/* Invert color on dark theme for the logo */
+body.dark-theme .logo {
+    color: #fff;
+}
+
+.logo:hover {
+    color: var(--logo-color); /* Invert theme effect for logo */
+}
+
+/* Right Section styles */
+.right-section {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 175px;
+    margin-right: 100px;
+    padding-left: 25px;
+}
+
+/* Navigation styles */
+nav {
+    display: inline-flex;
+    flex-direction: row; /* Display links vertically */
+   
+}
+
+/* Navigation links styles */
+ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin-bottom: 20px; /* Add some spacing between links */
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 1em;
+    margin-inline-end: 1em;
+    padding-inline-start: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.3s;
+    margin-bottom: 20px; /* Add some spacing between links */
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ff6600; /* Color of the animation */
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-link:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+/* Invert color on dark theme for navigation links */
+body.dark-theme .nav-link {
+    color: #fff;
+}
+
+/* Main content styles */
+main {
+    margin-top: 0; /* Adjusted to accommodate the fixed header */
+}
+
+/* Section styles */
+.content-section {
+    padding: 20px;
+    background-color: var(--light-theme-bg); /* Background color for light theme */
+    color: var(--light-theme-text);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark theme styles for sections */
+body.dark-theme .content-section {
+    background-color: var(--dark-theme-bg); /* Background color for dark theme */
+    color: var(--dark-theme-text);
+}
+
+/* Add the "hidden" class style */
+.hidden {
+    display: none;
+}
+
+/* Footer styles */
+footer {
+    margin-top: 50px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+/* Invert color on dark theme for the footer */
+body.dark-theme footer {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Moon and Sun styles */
+.moon,
+.sun {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 15px;
+    transition: color 0.3s;
+    background-color: transparent;
+}
+
+/* Moon icon styles */
+.moon:before {
+    content: '\1F319'; /* Unicode for crescent moon character */
+    font-size: 20px;
+}
+
+/* Sun icon styles */
+.sun:before {
+    content: '\2600'; /* Unicode for sun character */
+    font-size: 20px;
+}
+
+/* Set alternating sun and moon icons for the toggle switch */
+.theme-toggle .moon,
+.theme-toggle .sun {
+    display: none;
+}
+
+.theme-toggle .sun {
+    display:inline-block;
+}
+
+/* Alternating sun and moon icons on theme switch */
+body.dark-theme .moon,
+body:not(.dark-theme) .sun {
+    display: none;
+}
+
+/* Additional styles for left section */
+.left-section {
+    font-family: var(--font-family-logo);
+    font-size: var(--font-size-logo);
+    color: var(--logo-color);
+    margin-right: 10px;
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+/* Functioning theme change */
+.theme-toggle {
+    cursor: pointer;
+}
+
+/* Add animation styles for sun icon */
+.moon {
+    animation: flickerAnimation 1s infinite alternate; /* Example animation */
+}
+
+@keyframes flickerAnimation {
+    0% {
+        color: #FFD700; /* Start color */
+        transform: translateX(0);
+    }
+    100% {
+        color: #FFA500; /* End color */
+        transform: translateX(5px); /* Example: Move right by 5px */
+    }
+}
+
+/* Add animation styles for moon icon */
+.sun {
+    animation: floatAnimation 1s infinite alternate; /* Example animation */
+}
+
+@keyframes floatAnimation {
+    0% {
+        color: #666; /* Start color */
+        transform: translateY(0);
+    }
+    100% {
+        color: #999; /* End color */
+        transform: translateY(-5px); /* Example: Float up by 5px */
+    }
+}
+
+/* Add hover styles for sun icon in dark theme */
+body.dark-theme .sun:hover {
+    color: #FFA500; /* Change color on hover in dark theme */
+    transform: translateX(5px); /* Example: Move right by 5px on hover */
+}
+
+/* Add hover styles for moon icon in light theme */
+body:not(.dark-theme) .moon:hover {
+    color: #999; /* Change color on hover in light theme */
+    transform: translateY(-5px); /* Example: Float up by 5px on hover */
+}
+
+/* Scroll to Top Button styles */
+#scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    transition: background-color 0.3s, transform 0.3s;
+    animation: floatAnimation 2s infinite ease-in-out; /* Added animation */
+}
+
+#scrollToTop:hover {
+    background-color: #2980b9;
+    transform: scale(1.1); /* Increase size on hover */
+}
+
+/* Animation for floating effect */
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
