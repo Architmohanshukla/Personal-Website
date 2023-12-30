@@ -254,6 +254,7 @@ body.scrolled {
     overflow: hidden;
     margin-right: 50px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 1s ease-in-out; /* Add a smooth transition effect */
 }
 
 /* Add this style for the individual images in the carousel */
@@ -805,3 +806,42 @@ footer {
     transform: translateY(0);
 }
 
+
+/* Add this style to create a slim scrollbar for WebKit browsers */
+body::-webkit-scrollbar {
+    width: 5px;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #162630; /* Change the color as per your design */
+    border-radius: 4px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #ecf0f1; /* Change the color as per your design */
+}
+
+/* Add this style for Firefox scrollbar (optional) */
+body {
+    scrollbar-width: thin;
+    scrollbar-color: #3498db #ecf0f1; /* Change the colors as per your design */
+}
+
+/* Media query for smaller screens (e.g., tablets) */
+@media only screen and (max-width: 768px) {
+    body::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Add additional styles for smaller screens if needed */
+}
+
+/* Media query for even smaller screens (e.g., mobile devices) */
+@media only screen and (max-width: 480px) {
+    body::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    /* Add additional styles for even smaller screens if needed */
+}

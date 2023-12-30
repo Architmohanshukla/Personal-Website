@@ -204,12 +204,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Image slideshow gallery
     const imagePaths = [
         'images/Archit Camera.JPG',
-        'images/AboutmeArchit.jpeg',
         'images/ME Camera.jpeg',
         'images/ME3.jpg',
         'images/Archit About Me.jpg',
-        'images/AboutMEarchit.jpg',
-        'images/AboutMEE.jpg'
+        'images/AboutMEarchit.jpg'
+        
     ];
 
     let currentImageIndex = 0;
