@@ -1,101 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archit Mohan Shukla - Portfolio</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥼</text></svg>">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="animation.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap">  
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tillana&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tillana&display=swap" />
+    <!-- Add this line to the head of your HTML file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕉️</text></svg>">
+    <!-- Add these lines to the head of your HTML file -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <title>ARCHIT</title>
 </head>
+
 <body>
-    <nav class="navigation">
-        <!-- Left Section with Logo -->
-        <div class="left-section">
-            <!-- Your stylized logo with a link to the landing page -->
-            <a href="#landing" class="nav-link" id="logoLink" onclick="toggleSection('landing')">
-                <div>
-                    <span class="logoText">Archit Mohan Shukla</span>
-                </div>
-            </a>
+    <nav class="navigation">  <!-- Top Bar -->
+<div class="top-bar">
+    <div class="logo" onclick="navigateToHomePage()">ARCHIT MOHAN SHUKLA</div>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about-me">About Me</a>
+        <a href="#skills">Skills</a>
+        <a href="#research">Research</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#more">More</a>
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙;</span>
+    </div>
+</div>
+</nav>
+<main>  <!-- Home Section -->
+<!-- Home Section -->
+<section id="home" class="section">
+    <div class="content">
+       <!-- <div class="container">
+            <div class="research-background">
+                <!-- Graphical representation of research background 
+                <img src="images/Landsape.jpg" alt="Research Background" class="research-image">
+            </div>-->
+        <div class="home-text">
+            <h5>Hello There 🙋‍♂️!</h5>
+            <h1>I'm Archit Mohan Shukla</h1>
+            <h2>Tech Enthusiast & Student</h2>
+            <p>Embarking on the intersection of Bio & Tech, exploring the dynamic relationship between energy and biology, encompassing skills in self-help and recreation pursuits.</p>
         </div>
-        <!-- Right Section with Navigation Links -->
-        <div class="right-section">
-            <ul>
-                <li><a href="#about" class="nav-link" onclick="toggleSection('about')">About</a></li>
-                <li><a href="#portfolio" class="nav-link" onclick="toggleSection('portfolio')">Portfolio</a></li>
-                <li><a href="#contact" class="nav-link" onclick="toggleSection('contact')">Contact</a></li>
-                <li><a href="#research" class="nav-link" onclick="toggleSection('research')">Research</a></li>
-                <li><a href="#interests" class="nav-link" onclick="toggleSection('interests')">Interests</a></li>
-                <li class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Theme">
-                    <div class="moon" id="moonIcon" onclick="toggleTheme()"></div>
-                    <div class="sun" id="sunIcon" onclick="toggleTheme()"></div>
-                </li>
-            </ul>
+    </div>
+
+    <!-- Circular background for emojis -->
+    <div class="emoji-circle">
+        <!-- Stylized line of emojis below the text -->
+        <span>🧬</span> <!-- DNA emoji -->
+        <span>💻</span> <!-- Laptop emoji -->
+        <span>🔬</span> <!-- Pipette emoji -->
+        <span>📷</span> <!-- Camera emoji -->
+        <span>📚</span> <!-- Books emoji -->
+        <span>🧑‍🍳</span> <!-- Cooking-related emoji -->
+    </div>
+    
+</section>
+
+</main>
+
+<!-- About Me Section -->
+<section id="about-me" class="section">
+
+    <section class="contents fade-in">
+        <div class="text-section">
+            <h2>Hello There, I'm Archit</h2>
+            <p>A tech enthusiast and a keen Biotechnologist from New Delhi, India. I leverage technology to my advantage, showcasing my skills in PowerPoint and web development (HTML, CSS, JavaScript).</p>
+            <p>With a graduate degree in Biotechnology, I delve into the intersection of energy, vibrations, and biology—studying how cells respond to their environment.</p>
+            <p>Passionate about self-help and recreation, I enjoy reading books on personal development. My active recreation involves cooking, photography, and, currently, web development.</p>
+            <p>Focused on academics, I aim to explore the energy and vibration aspects of biology and cells in the future.</p>
         </div>
-    </nav>
 
-    <!-- Main Content Sections -->
-    <main>
-        <!-- Landing Page Section -->
-        <section id="landing" class="content-section">
-            <div class="landing-content">
-                <h1>Welcome to My Portfolio</h1>
-                <p>I'm Archit Mohan Shukla, a passionate web developer and designer. Explore my work and get to know more about me.</p>
+        <div class="image-section">
+            <div id="image-carousel" class="image-carousel">
+                <!-- Images will be dynamically added here by JavaScript -->
             </div>
-        </section>
+        </div>
+    </section>        
+   
+</section>
 
-        <!-- Example About Me Section -->
-        <section id="about" class="content-section hidden">
-            <h2>About Me</h2>
-            <p>Your introduction goes here...</p>
-        </section>
 
-        <!-- Example Portfolio Section -->
-        <section id="portfolio" class="content-section hidden">
-            <h2>Portfolio</h2>
-            <div class="portfolio-item">
-                <h3>Project 1</h3>
-                <p>Description of your project...</p>
+<!-- Skills Section -->
+<section id="skills" class="section">
+    
+        <h2>Skills</h2>
+        <div class="content">
+        <!-- Technical Skills -->
+        <div class="skill" id="technical-skill">
+            <div class="skill-header">
+                <div class="skill-name">Technical Skills</div>
             </div>
-            <!-- Add more portfolio items as needed -->
-        </section>
+            <div class="progress-bar-container">
+                <div class="progress-bar" data-width="70%"></div>
+            </div>
+            <div class="sub-skills">
+                <div class="sub-skill" data-width="80%">Technical Writing</div>
+                <div class="sub-skill" data-width="80%">Wet Lab Techniques</div>
+                <div class="sub-skill" data-width="75%">Dry Lab Techniques</div>
+                <div class="sub-skill" data-width="75%">Understanding of Code (Debugging)</div>
+                <div class="sub-skill" data-width="85%">Googling and AI</div>
+            </div>
+        </div>
 
-        <!-- Example Contact Section -->
-        <section id="contact" class="content-section hidden">
-            <h2>Contact</h2>
-            <p>You can reach me at HAVE TO DESIGN THIS</p>
-            <!-- Add your contact form or information here -->
-        </section>
+        <!-- Language Skills -->
+        <div class="skill" id="language-skill">
+            <div class="skill-header">
+                <div class="skill-name">Language Skills</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" data-width="90%"></div>
+            </div>
+            <div class="sub-skills">
+                <div class="sub-skill" data-width="95%">Hindi (Mother Tongue)</div>
+                <div class="sub-skill" data-width="90%">English</div>
+                <div class="sub-skill" data-width="50%"><a href="https://www.duolingo.com/profile/ArchitMoha2" target="_blank" rel="noopener noreferrer">German (Duolingo Profile)</a></div>
+            </div>
+        </div>
 
-        <!-- Add more sections for Research and Interests as needed -->
-        <section id="research" class="content-section hidden">
+        <!-- Soft Skills -->
+        <div class="skill" id="soft-skill">
+            <div class="skill-header">
+                <div class="skill-name">Soft Skills</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" data-width="80%"></div>
+            </div>
+            <div class="sub-skills">
+                <div class="sub-skill" data-width="85%">Communication</div>
+                <div class="sub-skill" data-width="85%">Leadership</div>
+                <div class="sub-skill" data-width="80%">Teamwork</div>
+                <div class="sub-skill" data-width="85%">Time Management</div>
+                <div class="sub-skill" data-width="80%">Adaptability</div>
+            </div>
+        </div>
+    </div>
+        <!-- Skill Interaction Legend -->
+        <div class="interaction-legend">
+            <p><span></span>*When hovered upon each skill-set, the bar goes 100%, means under guidance and proper mentorship there is scope for improvement</p>
+        </div>
+</section>
+
+<!-- Research Section -->
+<section id="research" class="section">
+    <div class="container">
+        <!-- Creative Background with Parallax Effect -->
+        <div class="contentt">
             <h2>Research</h2>
-            <p>Your research details go here...</p>
-        </section>
 
-        <section id="interests" class="content-section hidden">
-            <h2>Interests</h2>
-            <p>Your interests details go here...</p>
-        </section>
+        <!-- Research Subsection: Projects -->
+        <div class="research-subsection">
+            <h3>Projects & Internships</h3>
+            <div class="project-container">
+                <!-- Project Cards with Flip Animation -->
+                <div class="project">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/Final Year.jpg" alt="Project 1">
+                            </div>
+                            <div class="card-back">
+                                <h3>Bio-Matrix Development</h3>
+                                <h5>Final Year Project</h5>
+                                <p>Developed bio-matrix and derivatives for animal cell culture.</p>
+                                <a href="#" class="details-link">Learn More.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/BIRAC.png" alt="BIIS-SRISTI">
+                            </div>
+                            <div class="card-back">
+                                <h3>BIIS-SRISTI</h3>
+                                <h5>Internship</h5>
+                                <p>Received mentorship regarding Grassroots Innovations.</p>
+                                <a href="https://drive.google.com/file/d/1NPAEGC7VsV4ImftBdmtAzFuU6prFwZ52/view?usp=drive_link" target="_blank" class="details-link">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/IIT-Indore.png" alt="IIT-Indore">
+                            </div>
+                            <div class="card-back">
+                                <h3>IIT-Indore</h3>
+                                <h5>Internship</h5>
+                                <p>Principles of Drug Discovery and Development.</p>
+                                <a href="https://drive.google.com/file/d/1r_6xNcPU5jhduv6nt9aIat_w-FOmDL_5/view?usp=drive_link" target="_blank" class="details-link">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Scroll to Top Button -->
-        <div id="scrollToTop" onclick="scrollToTop()" title="Scroll to Top">
-            &#8593;
+                <!-- Add more project cards as needed -->
+            </div>
         </div>
-    </main>
 
+        <!-- Research Subsection: Publications -->
+        <div class="research-subsection">
+            <h3>Publications</h3>
+            <div class="publication-container">
+                <!-- Publication Cards with Flip Animation -->
+                <div class="publication">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/erecta.png" alt="Paper">
+                            </div>
+                            <div class="card-back">
+                                <h4>Studies on Qualitative and Quantitative Analysis of Phytochemicals from Petals and Leaves of Tagetes erecta</h4>
+                                <h5>Surya Prakash Dv, Archit Mohan Shukla, Ritika Ritika, Mohammad Munawar T., International Journal of Plant Biotechnology, 2022</h5>
+                                <a href="https://biotech.journalspub.info/?journal=IJPB&page=article&op=view&path%5B%5D=737" target="_blank" class="details-link">Give a Read</a>        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="publication">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/Officinale.png" alt="Paper">
+                            </div>
+                            <div class="card-back">
+                                <h4>Studies on Extraction of Flavonoids from Peel of Zingiber officinale</h4>
+                                <h5>Archit Mohan Shukla, Akshat Agarwal, Amarjeet Redhu, Surya Prakash D.V., Research & Reviews: A Journal of Pharmacology, 2022</h5>
+                                <a href="https://pharmajournals.stmjournals.in/index.php/RRJoP/article/view/1172" target="_blank" class="details-link">Give a Read</a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="publication">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="images/Anna.png" alt="Certificate">
+                            </div>
+                            <div class="card-back">
+                                <h4>Studies on Extraction of Flavonoids from Seeds of Carica Papaya</h4>
+                                <h5>Archit Mohan Shukla, Surya Prakash D.V., Presented at the 4th International Conference by CBSD Annamalai University, 2022</h5>
+                                <a href="https://drive.google.com/file/d/1hLN0hRdnoXpR1OAFGFz0ztM6YitUccMf/view?usp=drive_link" target="_blank" class="details-link">View</a>        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more publication cards as needed -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="section">
+    <section class="contentt fade-in">
+        <h2>Portfolio</h2>
+    <div class="portfolio-container">
+          <div class="portfolio-item">
+            <img src="images/Abstract_Stiry.jpg" alt="Portfolio">
+            <div class="portfolio-overlay">
+                <div class="portfolio-overlay-text"></div>
+                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+            </div>
+        </div>
+        <div class="portfolio-item">
+            <img src="images/nature1.webp" alt="Portfolio">
+            <div class="portfolio-overlay">
+                <div class="portfolio-overlay-text"></div>
+                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+            </div>
+        </div>
+        <div class="portfolio-item">
+            <img src="images/monkey_portrait03.JPG" alt="Portfolio">
+            <div class="portfolio-overlay">
+                <div class="portfolio-overlay-text"></div>
+                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+            </div>
+        </div>
+        <div class="portfolio-item">
+            <img src="images/abs5.jpeg" alt="Portfolio">
+            <div class="portfolio-overlay">
+                <div class="portfolio-overlay-text"></div>
+                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+            </div>
+        </div>
+        <div class="portfolio-item">
+            <img src="images/abs8.jpeg" alt="Portfolio">
+            <div class="portfolio-overlay">
+                <div class="portfolio-overlay-text"></div>
+                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+            </div>
+        </div>
+        <!-- Add more portfolio items as needed -->
+    </div>
+    </section>
+</section>
+
+
+
+    <!-- More -->
+<section id="more" class="section">  
+    <h2>Accomplishments & More </h2> 
+    <!-- Accomplishments Section -->
+<section id="accomplishments" class="section fade-in">
+    <h2>Accomplishments</h2>
+  
+    <!-- Certificate Cards -->
+    <div class="certificate-cards">
+      <!-- Academic Certificate -->
+      <div class="certificate-card">
+        <img src="images/AcademicCertifiate.webp" alt="Academic Certificate">
+        <h3>Academic Excellence</h3>
+        <p>Received for outstanding academic performance.</p>
+        <a href="https://drive.google.com/drive/folders/1--vePxerNimo7M93XGw9kawdEplqPIWZ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+      </div>
+  
+      <!-- Co-Curricular Certificate -->
+      <div class="certificate-card">
+        <img src="images/Co-curricular certificate.jpg" alt="Co-Curricular Certificate">
+        <h3>Co-Curricular Achievements</h3>
+        <p>Awarded for significant contributions to extracurricular activities.</p>
+        <a href="https://drive.google.com/drive/folders/1vOXL3YzQm15g-Yp7Krbpg1It4kExAtNQ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+      </div>
+  
+      <!-- Coursera Certificate -->
+      <div class="certificate-card">
+        <img src="images/coursera-course-certificate.webp" alt="Coursera Certificate">
+        <h3>Digital Course Completion</h3>
+        <p>Completed online courses on Digital Platforms</p>
+        <a href="https://drive.google.com/drive/folders/1IniLB3Bkx9L5a0_-tPSp9vhHhkPehPCs?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+      </div>
+    </div>
+  </section> 
+ <!-- Books Section -->
+<section id="books">
+    <h2>Books</h2>
+    <div class="books-container">
+        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Biology-of-Belief-2f4cf8018d1c45ca9f4f0307f571b72b?pvs=4';">
+            <img src="images/Biology of Belief.png" alt="Biology of Belief">
+            <h3>Biology Of Belief</h3>
+            <a href="https://www.notion.so/architshukla/Biology-of-Belief-2f4cf8018d1c45ca9f4f0307f571b72b?pvs=4" target="_blank">See Summary</a>
+            <div class="book-overlay">
+                <h3>Biology Of Belief</h3>
+            </div>
+        </div>
+        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Think-Like-a-Monk-83009350b402421eba9bb744ba7435cd?pvs=4';">
+            <img src="images/Think Like a Monk.jpg" alt="Think Like a Monk">
+            <h3>Think Like a Monk</h3>
+            <a href="https://www.notion.so/architshukla/Think-Like-a-Monk-83009350b402421eba9bb744ba7435cd?pvs=4" target="_blank">See Summary</a>
+            <div class="book-overlay">
+                <h3>Think Like a Monk</h3>
+            </div>
+        </div>
+        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4';">
+            <img src="images/The Mindset.jpeg" alt="The Mindset">
+            <h3>The Mindset</h3>
+            <a href="https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4" target="_blank">See Summary</a>
+            <div class="book-overlay">
+                <h3>The Mindset</h3>
+            </div>
+        </div>
+        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Power-of-the-Subconscious-mind-79ebb8c89dbd442e8db1b43278c5f4b3?pvs=4';">
+            <img src="images/The Power of your subconscious Mind.jpg" alt="The Power of your subconscious Mind">
+            <h3>The Power of your subconscious Mind</h3>
+            <a href="https://www.notion.so/architshukla/Power-of-the-Subconscious-mind-79ebb8c89dbd442e8db1b43278c5f4b3?pvs=4" target="_blank">See Summary</a>
+            <div class="book-overlay">
+                <h3>The Power of your subconscious Mind</h3>
+            </div>
+        </div>
+        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4';">
+            <img src="images/Life Without Limits.jpg" alt="Life Without Limits">
+            <h3>Life Without Limits</h3>
+            <a href="https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4" target="_blank">See Summary</a>
+            <div class="book-overlay">
+                <h3>Life Without Limits</h3>
+            </div>
+        </div>
+        <!-- Add more book items as needed -->
+    </div>
+</section>
+
+</div>
+</section>
     <!-- Footer Section -->
-    <footer>
-        <!-- Update the text and add your own style class -->
-        <p>&copy; 2023 Archit ❤️</p>
+    <footer id="myFooter">
+        <div class="footer-container">
+            <div class="left-section">
+                <p>By Archit with <span class="heart">&#10084;</span></p>
+            </div>
+            <div class="right-section">
+                <a href="mailto:archit47a@gmail.com">Mail Me</a>
+                <a href="https://wa.me/919990951644/?text=Hi Archit, What's up" target="_blank">WhatsApp</a>
+                <a href="https://www.linkedin.com/in/archit-mohan-shukla-0b2b15209/" target="_blank">LinkedIn</a>
+                <div class="scroll-to-top" onclick="scrollToTop()">⬆️</div>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.3/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
