@@ -1606,6 +1606,25 @@ function clearKeywordDetails() {
     content.classList.remove('details-content-animate');
 }
 
+// --- Dynamic Persona Progress Gauge Animation ---
+function animatePersonaGauges() {
+    const gaugeFills = document.querySelectorAll('.gauge-fill');
+    gaugeFills.forEach(fill => {
+        const module = fill.closest('.persona-module');
+        if (!module) return;
+        const targetValue = parseInt(module.getAttribute('data-value'), 10) || 0;
+        
+        // Circumference is 201 (2 * PI * 32 = 201.06)
+        const circumference = 201;
+        const offset = circumference - (circumference * targetValue) / 100;
+        
+        // Slightly delayed transition initialization to guarantee DOM visibility triggers transition
+        setTimeout(() => {
+            fill.style.strokeDashoffset = offset;
+        }, 150);
+    });
+}
+
 // --- DOM Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     // --- Switchable About Me Tabs & sliding indicator ---
@@ -1739,6 +1758,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initTheme();
     initCarousel();
+    animatePersonaGauges();
     initObservers();
     initSkillsHover();
     initMap();

@@ -423,6 +423,59 @@ body.scrolled .top-bar {
     margin-bottom: 0;
 }
 
+/* Biography Console Status Bar */
+.bio-status-bar {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    user-select: none;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: statusPulseAnimation 1.5s infinite alternate;
+}
+
+.status-text {
+    color: #10b981;
+    font-weight: bold;
+}
+
+.status-telemetry {
+    display: flex;
+    gap: 15px;
+}
+
+@keyframes statusPulseAnimation {
+    0% {
+        opacity: 0.4;
+        transform: scale(0.9);
+        box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1.15);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+    }
+}
+
 /* Cell B: Trajectory Steps */
 .bento-timeline {
     grid-column: 3;
@@ -515,40 +568,254 @@ body.scrolled .top-bar {
 .persona-matrix-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 16px;
 }
 
-.persona-block {
+/* Individual Module Accent Variables */
+.persona-module.biotech {
+    --module-color: #6366f1;
+    --module-color-rgb: 99, 102, 241;
+}
+
+.persona-module.medtech {
+    --module-color: #06b6d4;
+    --module-color-rgb: 6, 182, 212;
+}
+
+.persona-module.photography {
+    --module-color: #ec4899;
+    --module-color-rgb: 236, 72, 153;
+}
+
+.persona-module.culinary {
+    --module-color: #f59e0b;
+    --module-color-rgb: 245, 158, 11;
+}
+
+.persona-module {
+    position: relative;
     background: var(--bg-accent);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 12px 18px;
+    border-radius: 16px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
+    overflow: hidden;
     cursor: default;
-    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
 }
 
-.persona-block:hover {
-    background-color: rgba(var(--accent-color-rgb), 0.05);
-    border-color: rgba(var(--accent-color-rgb), 0.2);
-    transform: translateY(-2px);
+.persona-module::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 10% 20%, rgba(var(--module-color-rgb), 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    opacity: 0.5;
 }
 
-.persona-icon {
-    font-size: 1.5rem;
+.persona-module:hover::before {
+    opacity: 1;
 }
 
-.persona-text h4 {
+.persona-module:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--module-color-rgb), 0.4);
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3), 
+                0 0 12px rgba(var(--module-color-rgb), 0.15);
+}
+
+body.light-theme .persona-module:hover {
+    box-shadow: 0 10px 25px -10px rgba(var(--module-color-rgb), 0.15), 
+                0 0 12px rgba(var(--module-color-rgb), 0.1);
+}
+
+/* Background Animated Signal Wave */
+.persona-signal-wave {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 200%;
+    height: 40px;
+    opacity: 0.08;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.persona-module:hover .persona-signal-wave {
+    opacity: 0.2;
+}
+
+.persona-signal-wave path {
+    fill: none;
+    stroke: var(--module-color);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: flowSignal 4s linear infinite;
+}
+
+.persona-module.medtech .persona-signal-wave path {
+    animation-duration: 3s;
+}
+
+.persona-module.photography .persona-signal-wave path {
+    animation-duration: 5s;
+}
+
+.persona-module.culinary .persona-signal-wave path {
+    animation-duration: 4.5s;
+}
+
+@keyframes flowSignal {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Gauge Circle Dials */
+.persona-gauge-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.persona-gauge {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.gauge-track {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 3.5;
+}
+
+.gauge-fill {
+    fill: none;
+    stroke: var(--module-color);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 201;
+    stroke-dashoffset: 201;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: drop-shadow(0 0 3px rgba(var(--module-color-rgb), 0.5));
+}
+
+.gauge-dots {
+    fill: none;
+    stroke: var(--module-color);
+    stroke-width: 1.2;
+    stroke-dasharray: 2 6;
+    opacity: 0.35;
+    transform-origin: center;
+    animation: rotateDots 20s linear infinite;
+}
+
+.persona-module.medtech .gauge-dots,
+.persona-module.culinary .gauge-dots {
+    animation-direction: reverse;
+}
+
+@keyframes rotateDots {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.persona-center-icon {
+    position: absolute;
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.persona-module:hover .persona-center-icon {
+    transform: scale(1.18);
+}
+
+/* Module Text Details & HUD */
+.persona-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    z-index: 2;
+}
+
+.persona-details h4 {
     font-size: 0.95rem;
     font-weight: 600;
-    margin-bottom: 1px;
+    margin: 0;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
 }
 
-.persona-text span {
-    font-size: 0.75rem;
+.persona-module:hover h4 {
+    color: var(--module-color);
+}
+
+.persona-sub {
+    font-size: 0.76rem;
     color: var(--text-secondary);
+}
+
+.persona-telemetry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+}
+
+.persona-telemetry-tag {
+    font-family: monospace;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(var(--module-color-rgb), 0.08);
+    border: 1px solid rgba(var(--module-color-rgb), 0.15);
+    color: var(--module-color);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.persona-telemetry-status {
+    font-family: monospace;
+    font-size: 0.62rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+}
+
+/* Small Viewport Stacking for Persona Grid */
+@media (max-width: 576px) {
+    .persona-matrix-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .persona-module {
+        padding: 12px 18px;
+    }
 }
 
 /* Cell D: Media Carousel (Laboratory Diagnostics Monitor Style) */

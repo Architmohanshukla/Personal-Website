@@ -99,6 +99,17 @@
                             <p>Actively interested in emerging domains including regenerative technologies, wearable biomedical systems, mechanobiology, AI-assisted healthcare research, biomedical data science, and translational medical technologies aimed at improving human health outcomes. Brings a multidisciplinary approach to research and innovation, with the ability to bridge scientific inquiry, engineering execution, and technology-driven healthcare solutions.</p>
                         </div>
                     </div>
+                    <div class="bio-status-bar">
+                        <div class="status-indicator">
+                            <span class="status-pulse"></span>
+                            <span class="status-text">SYS_CORE: OPERATIONAL</span>
+                        </div>
+                        <div class="status-telemetry">
+                            <span>MEM_CELLS: NOMINAL</span>
+                            <span>BIO_LINK: SYNCED</span>
+                            <span>VERSION: 2.2.0</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Cell B: Career Trajectory (Timeline) -->
@@ -137,32 +148,99 @@
                 <div class="bento-card glass-panel bento-persona">
                     <h3>Persona & Passions</h3>
                     <div class="persona-matrix-grid">
-                        <div class="persona-block">
-                            <span class="persona-icon">🧬</span>
-                            <div class="persona-text">
+                        <!-- Biotech R&D Module -->
+                        <div class="persona-module biotech" data-value="92">
+                            <!-- Background signal wave -->
+                            <svg class="persona-signal-wave" viewBox="0 0 120 40" preserveAspectRatio="none">
+                                <path d="M0,20 L30,20 L33,18 L36,22 L39,20 L45,20 L48,5 L52,35 L56,20 L62,20 L68,14 L74,20 L90,20 L120,20 L150,20 L153,18 L156,22 L159,20 L165,20 L168,5 L172,35 L176,20 L182,20 L188,14 L194,20 L210,20 L240,20" />
+                            </svg>
+                            <div class="persona-gauge-wrapper">
+                                <svg class="persona-gauge" viewBox="0 0 80 80">
+                                    <circle class="gauge-track" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-fill" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-dots" cx="40" cy="40" r="36" />
+                                </svg>
+                                <span class="persona-center-icon">🧬</span>
+                            </div>
+                            <div class="persona-details">
                                 <h4>Biotech R&D</h4>
-                                <span>Cellular Diagnostics</span>
+                                <span class="persona-sub">Cellular Diagnostics</span>
+                                <div class="persona-telemetry">
+                                    <span class="persona-telemetry-tag">AFFINITY: 92%</span>
+                                    <span class="persona-telemetry-status">ACTIVE</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="persona-block">
-                            <span class="persona-icon">💻</span>
-                            <div class="persona-text">
+
+                        <!-- MedTech Code Module -->
+                        <div class="persona-module medtech" data-value="88">
+                            <!-- Background signal wave -->
+                            <svg class="persona-signal-wave" viewBox="0 0 120 40" preserveAspectRatio="none">
+                                <path d="M0,20 L20,20 L20,10 L35,10 L35,20 L50,20 L50,30 L65,30 L65,20 L120,20 L140,20 L140,10 L155,10 L155,20 L170,20 L170,30 L185,30 L185,20 L240,20" />
+                            </svg>
+                            <div class="persona-gauge-wrapper">
+                                <svg class="persona-gauge" viewBox="0 0 80 80">
+                                    <circle class="gauge-track" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-fill" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-dots" cx="40" cy="40" r="36" />
+                                </svg>
+                                <span class="persona-center-icon">💻</span>
+                            </div>
+                            <div class="persona-details">
                                 <h4>MedTech Code</h4>
-                                <span>Computational Bio</span>
+                                <span class="persona-sub">Computational Bio</span>
+                                <div class="persona-telemetry">
+                                    <span class="persona-telemetry-tag">AFFINITY: 88%</span>
+                                    <span class="persona-telemetry-status">ONLINE</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="persona-block">
-                            <span class="persona-icon">📷</span>
-                            <div class="persona-text">
+
+                        <!-- Photography Module -->
+                        <div class="persona-module photography" data-value="94">
+                            <!-- Background signal wave -->
+                            <svg class="persona-signal-wave" viewBox="0 0 120 40" preserveAspectRatio="none">
+                                <path d="M0,20 Q10,30 20,20 Q30,10 40,20 Q50,30 60,20 Q70,10 80,20 Q90,30 100,20 Q110,10 120,20 Q130,30 140,20 Q150,10 160,20 Q170,30 180,20 Q190,10 200,20 Q210,30 220,20 Q230,10 240,20" />
+                            </svg>
+                            <div class="persona-gauge-wrapper">
+                                <svg class="persona-gauge" viewBox="0 0 80 80">
+                                    <circle class="gauge-track" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-fill" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-dots" cx="40" cy="40" r="36" />
+                                </svg>
+                                <span class="persona-center-icon">📷</span>
+                            </div>
+                            <div class="persona-details">
                                 <h4>Photography</h4>
-                                <span>Landscape & Macro</span>
+                                <span class="persona-sub">Landscape & Macro</span>
+                                <div class="persona-telemetry">
+                                    <span class="persona-telemetry-tag">AFFINITY: 94%</span>
+                                    <span class="persona-telemetry-status">READY</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="persona-block">
-                            <span class="persona-icon">🧑‍🍳</span>
-                            <div class="persona-text">
+
+                        <!-- Culinary Arts Module -->
+                        <div class="persona-module culinary" data-value="85">
+                            <!-- Background signal wave -->
+                            <svg class="persona-signal-wave" viewBox="0 0 120 40" preserveAspectRatio="none">
+                                <path d="M0,20 L15,10 L30,20 L45,30 L60,20 L75,10 L90,20 L105,30 L120,20 L135,10 L150,20 L165,30 L180,20 L195,10 L210,20 L225,30 L240,20" />
+                            </svg>
+                            <div class="persona-gauge-wrapper">
+                                <svg class="persona-gauge" viewBox="0 0 80 80">
+                                    <circle class="gauge-track" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-fill" cx="40" cy="40" r="32" />
+                                    <circle class="gauge-dots" cx="40" cy="40" r="36" />
+                                </svg>
+                                <span class="persona-center-icon">🧑‍🍳</span>
+                            </div>
+                            <div class="persona-details">
                                 <h4>Culinary Arts</h4>
-                                <span>Experimentation</span>
+                                <span class="persona-sub">Experimentation</span>
+                                <div class="persona-telemetry">
+                                    <span class="persona-telemetry-tag">AFFINITY: 85%</span>
+                                    <span class="persona-telemetry-status">STABLE</span>
+                                </div>
                             </div>
                         </div>
                     </div>
