@@ -637,6 +637,16 @@ function getCategoryColor(category, isLightTheme, alpha = 1) {
     return `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
 }
 
+// --- Personalized Category Descriptions ---
+const categoryPersonalizedDescriptions = {
+    core: "Biomedical Engineering postgraduate from Indian Institute of Technology Ropar with interdisciplinary research exposure spanning biomaterials, biomechanics, translational biomedical engineering, and prototype-oriented healthcare innovation. Experienced in integrating engineering principles with biological systems through experimental design, biomedical prototyping, simulation-assisted analysis, and data-driven scientific evaluation.",
+    lab: "Academic and research work has involved biomaterial characterization, conductive biomaterials, surface modification approaches, biocompatibility-oriented design thinking, and wearable biomedical system development, with exposure to mechanobiology-inspired concepts and biomedical device functionality. Demonstrates strong capability in scientific literature review, hypothesis development, validation studies, statistical interpretation, laboratory documentation, and structured research methodology development.",
+    computational: "Possesses working exposure to biomedical data analysis, scientific computing, computational modeling, image analysis, and AI-assisted research workflows, including familiarity with biomedical visualization tools and interdisciplinary analytical approaches. Research experience includes prototype testing, gait and plantar-pressure analysis concepts, resistance characterization, finite element-assisted evaluation, and biomechanical interpretation for functional biomedical applications.",
+    tools: "Technically proficient in tools and platforms including Microsoft Excel, GraphPad Prism, MATLAB, Python, ANSYS, SolidWorks, ImageJ, PowerPoint, Canva, and scientific literature databases such as PubMed and Google Scholar.",
+    regulatory: "Familiar with modern medical device development workflows including validation & verification principles, risk analysis considerations, quality systems awareness, and regulatory frameworks such as ISO 13485 and FDA/MDR-oriented documentation environments.",
+    thesis: "Demonstrates strong interdisciplinary coordination, technical communication, and research-to-prototype execution capability through collaborative innovation exposure at Indian Institute of Technology Delhi, including project leadership experience involving multi-team coordination and healthcare innovation ecosystem engagement. Interested in advancing translational healthcare technologies at the intersection of biomaterials, biomedical systems, wearable devices, biomechanics, AI-assisted healthcare research, and next-generation medical technology innovation."
+};
+
 // --- Interactive Force-Directed Network Graph Class ---
 class NetworkTopologyGraph {
     constructor(canvasId, containerId) {
@@ -720,7 +730,8 @@ class NetworkTopologyGraph {
                 source: hub,
                 target: node,
                 length: 65,
-                isHubLink: false
+                isHubLink: false,
+                pulseOffset: Math.random()
             });
         });
         
@@ -733,7 +744,8 @@ class NetworkTopologyGraph {
                 source: n1,
                 target: n2,
                 length: 150,
-                isHubLink: true
+                isHubLink: true,
+                pulseOffset: Math.random()
             });
         }
     }
@@ -827,6 +839,7 @@ class NetworkTopologyGraph {
         const titleEl = document.getElementById('details-title');
         const catEl = document.getElementById('details-category');
         const descEl = document.getElementById('details-desc');
+        const calloutEl = document.getElementById('details-context-callout');
         
         if (!placeholder || !content || !titleEl || !catEl || !descEl) return;
         
@@ -835,39 +848,47 @@ class NetworkTopologyGraph {
         switch(category) {
             case "core": 
                 catName = "Core Biomedical Engineering"; 
-                catDesc = "Core principles bridging mechanical, electrical, biological, and medical design to create advanced healthcare innovations.";
+                catDesc = categoryPersonalizedDescriptions.core;
                 break;
             case "lab": 
                 catName = "Research & Lab Competency"; 
-                catDesc = "Experimental protocols, sterile cell cultures, wet lab workflows, statistical analysis, and high-fidelity regulatory verification practices.";
+                catDesc = categoryPersonalizedDescriptions.lab;
                 break;
             case "computational": 
                 catName = "Computational & Quantitative"; 
-                catDesc = "Healthcare analytics, deep learning models, custom scripting in Python/MATLAB, and computer vision systems for physiological modeling.";
+                catDesc = categoryPersonalizedDescriptions.computational;
                 break;
             case "regulatory": 
                 catName = "Medical Device & Regulatory"; 
-                catDesc = "End-to-end device development standards, design controls, risk management (ISO 14971), and FDA/CE compliance pathways.";
+                catDesc = categoryPersonalizedDescriptions.regulatory;
                 break;
             case "thesis": 
                 catName = "Thesis & Special Domain"; 
-                catDesc = "Conductive materials, flexible polymer coatings, plantar pressure analysis, gait kinetics, and biomechanical modeling.";
+                catDesc = categoryPersonalizedDescriptions.thesis;
                 break;
             case "tools": 
                 catName = "Tools & Software"; 
-                catDesc = "Engineering design (SolidWorks, AutoCAD), simulations (ANSYS FEA), data analysis (Prism, Origin, SPSS), and literature research tools.";
+                catDesc = categoryPersonalizedDescriptions.tools;
                 break;
             default: 
                 catName = "Biomedical Expertise";
                 catDesc = "Scientific capability architecture and translational research.";
         }
         
+        const isLightTheme = document.body.classList.contains('light-theme');
+        catEl.style.color = getCategoryColor(category, isLightTheme, 0.95);
         catEl.textContent = "Expertise Hub";
         titleEl.textContent = catName;
         descEl.textContent = catDesc;
+        if (calloutEl) calloutEl.style.display = 'none';
         
         placeholder.style.display = 'none';
         content.style.display = 'block';
+        
+        // Add micro-animation
+        content.classList.remove('details-content-animate');
+        void content.offsetWidth; // Trigger reflow to restart animation
+        content.classList.add('details-content-animate');
     }
     
     setupEvents() {
@@ -958,11 +979,7 @@ class NetworkTopologyGraph {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const activeViewBtn = document.querySelector('.view-btn.active');
-                        const isNetworkActive = activeViewBtn && activeViewBtn.getAttribute('data-view') === 'network';
-                        if (isNetworkActive) {
-                            this.startLoop();
-                        }
+                        this.startLoop();
                     } else {
                         this.stopLoop();
                     }
@@ -985,7 +1002,7 @@ class NetworkTopologyGraph {
             this.draggedNode.vy = 0;
         }
         
-        // Gravity attraction to canvas center
+        // Gravity attraction to canvas center & Proximity Repulsion
         this.nodes.forEach(node => {
             if (!node.visible) return;
             const dx = this.cx - node.x;
@@ -995,6 +1012,20 @@ class NetworkTopologyGraph {
                 const strength = node.isHub ? gravityStrength * 2.8 : gravityStrength;
                 node.vx += (dx / dist) * dist * strength;
                 node.vy += (dy / dist) * dist * strength;
+            }
+            
+            // Subtle cursor magnetic repulsion (nodes within 100px shift away gently)
+            if (this.mouse.x !== null && this.mouse.y !== null && node !== this.draggedNode) {
+                const mdx = node.x - this.mouse.x;
+                const mdy = node.y - this.mouse.y;
+                const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                const maxRepelDist = 100;
+                
+                if (mdist < maxRepelDist && mdist > 0.1) {
+                    const force = 0.45 * (1 - mdist / maxRepelDist);
+                    node.vx += (mdx / mdist) * force;
+                    node.vy += (mdy / mdist) * force;
+                }
             }
         });
         
@@ -1101,6 +1132,39 @@ class NetworkTopologyGraph {
             this.ctx.strokeStyle = getCategoryColor(category, this.isLightTheme, alpha);
             this.ctx.lineWidth = link.isHubLink ? 1.5 : 1;
             this.ctx.stroke();
+            
+            // Neural Signal flow pulse along category-to-keyword links
+            if (!link.isHubLink && A.visible && B.visible) {
+                let pulseAlpha = 0.65;
+                if (this.hoveredNode) {
+                    const isConnected = (A === this.hoveredNode || B === this.hoveredNode);
+                    pulseAlpha = isConnected ? 1.0 : 0.05;
+                }
+                
+                // Animate dot using Date.now()
+                const speed = 0.0007; // Smooth speed
+                const t = ((Date.now() * speed) + link.pulseOffset) % 1.0;
+                
+                const px = A.x + (B.x - A.x) * t;
+                const py = A.y + (B.y - A.y) * t;
+                
+                const pulseColor = getCategoryColor(B.category, this.isLightTheme, pulseAlpha);
+                
+                this.ctx.beginPath();
+                this.ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+                this.ctx.fillStyle = pulseColor;
+                
+                // Add high quality glow on hover/active
+                if (pulseAlpha > 0.1) {
+                    this.ctx.save();
+                    this.ctx.shadowColor = pulseColor;
+                    this.ctx.shadowBlur = 6;
+                    this.ctx.fill();
+                    this.ctx.restore();
+                } else {
+                    this.ctx.fill();
+                }
+            }
         });
         
         // 2. Draw Keyword Nodes
@@ -1146,24 +1210,53 @@ class NetworkTopologyGraph {
             this.ctx.fill();
             this.ctx.shadowBlur = 0; // reset
             
-            // Hover tooltip label
+            // Hover tooltip label with premium glassmorphism
             if (isHovered) {
-                this.ctx.font = "500 12px 'Outfit', 'Inter', sans-serif";
-                
+                this.ctx.font = "600 12px 'Outfit', 'Inter', sans-serif";
                 const textWidth = this.ctx.measureText(node.name).width;
-                this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.95)" : "rgba(15, 23, 42, 0.88)";
-                this.ctx.strokeStyle = getCategoryColor(node.category, this.isLightTheme, 0.4);
-                this.ctx.lineWidth = 1;
                 
+                const tooltipX = node.x + 12;
+                const tooltipY = node.y - 14;
+                const tooltipW = textWidth + 18;
+                const tooltipH = 26;
+                
+                this.ctx.save();
+                
+                // Tooltip drop shadow
+                this.ctx.shadowColor = this.isLightTheme ? "rgba(0, 0, 0, 0.08)" : "rgba(0, 0, 0, 0.35)";
+                this.ctx.shadowBlur = 12;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 4;
+                
+                // Glass panel background
+                this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.85)" : "rgba(15, 23, 42, 0.75)";
                 this.ctx.beginPath();
-                this.ctx.roundRect(node.x + 10, node.y - 10, textWidth + 12, 20, 5);
+                this.ctx.roundRect(tooltipX, tooltipY, tooltipW, tooltipH, 6);
                 this.ctx.fill();
+                
+                // Turn off shadow for border/text to prevent muddy rendering
+                this.ctx.shadowColor = "transparent";
+                this.ctx.shadowBlur = 0;
+                
+                // Glass panel borders
+                this.ctx.strokeStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.12)";
+                this.ctx.lineWidth = 1;
                 this.ctx.stroke();
                 
-                this.ctx.fillStyle = this.isLightTheme ? "#0f172a" : "#f1f5f9";
+                // Left indicator strip in category color
+                const stripColor = getCategoryColor(node.category, this.isLightTheme, 0.95);
+                this.ctx.fillStyle = stripColor;
+                this.ctx.beginPath();
+                this.ctx.roundRect(tooltipX + 1, tooltipY + 1, 3, tooltipH - 2, { topLeft: 5, bottomLeft: 5 });
+                this.ctx.fill();
+                
+                // Tooltip Text
+                this.ctx.fillStyle = this.isLightTheme ? "#0f172a" : "#f8fafc";
                 this.ctx.textAlign = "left";
                 this.ctx.textBaseline = "middle";
-                this.ctx.fillText(node.name, node.x + 16, node.y);
+                this.ctx.fillText(node.name, tooltipX + 12, tooltipY + tooltipH / 2);
+                
+                this.ctx.restore();
             }
         });
         
@@ -1211,11 +1304,23 @@ class NetworkTopologyGraph {
             this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.95)" : "rgba(15, 23, 42, 0.92)";
             this.ctx.fill();
             
-            // Core central node indicator
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
+            // Abbreviated uppercase core identifiers drawn centered inside category hub circles
+            let abbr = "";
+            switch(node.category) {
+                case "core": abbr = "BME"; break;
+                case "lab": abbr = "LAB"; break;
+                case "computational": abbr = "COMP"; break;
+                case "regulatory": abbr = "REG"; break;
+                case "thesis": abbr = "THES"; break;
+                case "tools": abbr = "TOOL"; break;
+                default: abbr = "HUB";
+            }
+            
+            this.ctx.font = isActive ? "bold 9px 'Outfit', sans-serif" : "600 8px 'Outfit', sans-serif";
             this.ctx.fillStyle = baseColor;
-            this.ctx.fill();
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(abbr, node.x, node.y + 0.5);
             
             // Draw Text labels
             const labelY = node.y - node.radius * scale - 12;
@@ -1378,6 +1483,7 @@ function showKeywordDetails(keyword) {
     const titleEl = document.getElementById('details-title');
     const catEl = document.getElementById('details-category');
     const descEl = document.getElementById('details-desc');
+    const calloutEl = document.getElementById('details-context-callout');
     
     if (!placeholder || !content || !titleEl || !catEl || !descEl) return;
     
@@ -1392,12 +1498,30 @@ function showKeywordDetails(keyword) {
         default: catName = "Biomedical Skill";
     }
     
+    const isLightTheme = document.body.classList.contains('light-theme');
+    catEl.style.color = getCategoryColor(keyword.category, isLightTheme, 0.95);
     catEl.textContent = catName;
     titleEl.textContent = keyword.name;
     descEl.textContent = keyword.desc;
     
+    if (calloutEl) {
+        const borderColor = getCategoryColor(keyword.category, isLightTheme, 0.85);
+        const bgColor = getCategoryColor(keyword.category, isLightTheme, isLightTheme ? 0.04 : 0.08);
+        
+        calloutEl.style.borderLeftColor = borderColor;
+        calloutEl.style.backgroundColor = bgColor;
+        
+        calloutEl.innerHTML = `<strong>Context & Experience:</strong><br>${categoryPersonalizedDescriptions[keyword.category]}`;
+        calloutEl.style.display = 'block';
+    }
+    
     placeholder.style.display = 'none';
     content.style.display = 'block';
+    
+    // Add micro-animation
+    content.classList.remove('details-content-animate');
+    void content.offsetWidth; // Trigger reflow to restart animation
+    content.classList.add('details-content-animate');
 }
 
 function clearKeywordDetails() {
@@ -1408,100 +1532,7 @@ function clearKeywordDetails() {
     
     placeholder.style.display = 'block';
     content.style.display = 'none';
-}
-
-function createKeywordBadge(kw) {
-    const badge = document.createElement('div');
-    badge.className = 'keyword-badge';
-    badge.setAttribute('data-category', kw.category);
-    
-    let icon = "🧬";
-    switch(kw.category) {
-        case "core": icon = "🧬"; break;
-        case "lab": icon = "🔬"; break;
-        case "computational": icon = "💻"; break;
-        case "regulatory": icon = "📜"; break;
-        case "thesis": icon = "⚡"; break;
-        case "tools": icon = "🛠️"; break;
-    }
-    
-    badge.innerHTML = `<span class="badge-icon">${icon}</span> ${kw.name}`;
-    
-    badge.addEventListener('mouseenter', () => {
-        badge.classList.add('active-highlight');
-        showKeywordDetails(kw);
-    });
-    
-    badge.addEventListener('mouseleave', () => {
-        badge.classList.remove('active-highlight');
-        clearKeywordDetails();
-    });
-    
-    badge.addEventListener('click', () => {
-        const searchInput = document.getElementById('keyword-search');
-        if (searchInput) {
-            searchInput.value = kw.name;
-            const event = new Event('input', { bubbles: true });
-            searchInput.dispatchEvent(event);
-        }
-    });
-    
-    return badge;
-}
-
-function renderKeywords(filter = "all", searchQuery = "") {
-    const container = document.getElementById('keywords-container');
-    if (!container) return;
-    
-    container.innerHTML = "";
-    
-    let filtered = keywordsData.filter(kw => {
-        const matchesCategory = (filter === "all" || kw.category === filter);
-        const matchesSearch = searchQuery === "" || 
-            kw.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            kw.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (kw.subcat && kw.subcat.toLowerCase().includes(searchQuery.toLowerCase()));
-        return matchesCategory && matchesSearch;
-    });
-    
-    if (filtered.length === 0) {
-        container.innerHTML = '<div class="no-results-msg" style="width:100%; text-align:center; padding: 20px; color:var(--text-secondary); font-style:italic;">No matching keywords found. Try adjusting your search query.</div>';
-        return;
-    }
-    
-    if (filter === "tools" || (filter === "all" && searchQuery !== "" && filtered.every(k => k.category === "tools"))) {
-        const groups = {};
-        filtered.forEach(kw => {
-            const sub = kw.subcat || "General Tools";
-            if (!groups[sub]) groups[sub] = [];
-            groups[sub].push(kw);
-        });
-        
-        for (const subcat in groups) {
-            const titleEl = document.createElement('div');
-            titleEl.className = "tools-group-title";
-            titleEl.textContent = subcat;
-            container.appendChild(titleEl);
-            
-            const groupWrapper = document.createElement('div');
-            groupWrapper.className = "tools-group-wrapper";
-            groupWrapper.style.width = "100%";
-            groupWrapper.style.display = "flex";
-            groupWrapper.style.flexWrap = "wrap";
-            groupWrapper.style.gap = "10px";
-            
-            groups[subcat].forEach(kw => {
-                const badge = createKeywordBadge(kw);
-                groupWrapper.appendChild(badge);
-            });
-            container.appendChild(groupWrapper);
-        }
-    } else {
-        filtered.forEach(kw => {
-            const badge = createKeywordBadge(kw);
-            container.appendChild(badge);
-        });
-    }
+    content.classList.remove('details-content-animate');
 }
 
 // --- DOM Initialization ---
@@ -1538,44 +1569,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Graph instance reference
     let graphInstance = null;
     
-    // --- Dual-View Toggle Binding ---
-    const viewButtons = document.querySelectorAll('.view-btn');
-    const gridContainer = document.getElementById('keywords-container');
-    const canvasContainer = document.getElementById('network-canvas-container');
+    // Initialize Connected Network Topology Graph immediately
+    graphInstance = new NetworkTopologyGraph('network-canvas', 'network-canvas-container');
+    if (graphInstance) {
+        graphInstance.resize();
+        graphInstance.updateFilter(activeFilter, activeSearch);
+        graphInstance.startLoop();
+    }
     
-    viewButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            viewButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const selectedView = btn.getAttribute('data-view');
-            if (selectedView === 'grid') {
-                if (gridContainer) gridContainer.style.display = 'flex';
-                if (canvasContainer) canvasContainer.style.display = 'none';
-                if (graphInstance) graphInstance.stopLoop();
-            } else if (selectedView === 'network') {
-                if (gridContainer) gridContainer.style.display = 'none';
-                if (canvasContainer) canvasContainer.style.display = 'block';
-                
-                // Initialize graph on first switch
-                if (!graphInstance) {
-                    graphInstance = new NetworkTopologyGraph('network-canvas', 'network-canvas-container');
-                    // Expose to window so theme toggle can call updateNetworkColors
-                    window.updateNetworkColors = (isLightTheme) => {
-                        if (graphInstance) {
-                            graphInstance.isLightTheme = isLightTheme;
-                        }
-                    };
-                }
-                
-                if (graphInstance) {
-                    graphInstance.resize(); // Recalculate dimensions
-                    graphInstance.updateFilter(activeFilter, activeSearch);
-                    graphInstance.startLoop();
-                }
-            }
-        });
-    });
+    // Expose updateNetworkColors to theme toggle
+    window.updateNetworkColors = (isLightTheme) => {
+        if (graphInstance) {
+            graphInstance.isLightTheme = isLightTheme;
+        }
+    };
     
     if (keywordSearchInput) {
         keywordSearchInput.addEventListener('input', (e) => {
@@ -1583,7 +1590,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clearSearchBtn) {
                 clearSearchBtn.style.display = activeSearch.length > 0 ? 'block' : 'none';
             }
-            renderKeywords(activeFilter, activeSearch);
             if (graphInstance) {
                 graphInstance.updateFilter(activeFilter, activeSearch);
             }
@@ -1596,7 +1602,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 keywordSearchInput.value = "";
                 activeSearch = "";
                 clearSearchBtn.style.display = 'none';
-                renderKeywords(activeFilter, activeSearch);
                 if (graphInstance) {
                     graphInstance.updateFilter(activeFilter, activeSearch);
                 }
@@ -1610,15 +1615,11 @@ document.addEventListener('DOMContentLoaded', () => {
             filterTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             activeFilter = tab.getAttribute('data-filter');
-            renderKeywords(activeFilter, activeSearch);
             if (graphInstance) {
                 graphInstance.updateFilter(activeFilter, activeSearch);
             }
         });
     });
-    
-    // Initial Keywords Render
-    renderKeywords(activeFilter, activeSearch);
 
     initTheme();
     initCarousel();

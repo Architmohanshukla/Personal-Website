@@ -244,12 +244,8 @@
                 <div class="explorer-header">
                     <div class="explorer-title-row">
                         <h3>Keyword Architecture & Technical Stack Explorer</h3>
-                        <div class="explorer-view-toggle">
-                            <button class="view-btn active" data-view="grid">Badge Grid</button>
-                            <button class="view-btn" data-view="network">Connected Topology</button>
-                        </div>
                     </div>
-                    <p>Filter or search through core competencies, laboratory techniques, computational skills, and specialized biomedical engineering keywords defining my research profile.</p>
+                    <p>Explore an interactive connected network of core competencies, laboratory techniques, computational skills, and specialized biomedical engineering keywords defining my research profile.</p>
                     
                     <div class="explorer-controls">
                         <div class="search-box">
@@ -271,28 +267,43 @@
                 </div>
                 
                 <div class="explorer-body">
-                    <div class="keywords-container" id="keywords-container">
-                        <!-- Dynamic keyword tags are injected here by script.js -->
-                    </div>
-                    <div class="network-canvas-container" id="network-canvas-container" style="display: none;">
+                    <div class="network-canvas-container" id="network-canvas-container">
                         <canvas id="network-canvas"></canvas>
                     </div>
                 </div>
 
                 <!-- Hover Details Pane -->
                 <div class="keyword-details-pane" id="keyword-details-pane">
-                    <div class="details-placeholder" id="details-placeholder">Hover over any keyword badge to view its contextual definition and significance.</div>
+                    <div class="details-placeholder" id="details-placeholder">
+                        <div class="profile-summary-header">
+                            <span class="profile-summary-subtitle">Overview</span>
+                            <h4 class="profile-summary-title">Executive Research & Expertise Profile</h4>
+                        </div>
+                        <div class="profile-summary-body">
+                            <p><strong>Core BME & Synthesis:</strong> Biomedical Engineering postgraduate from Indian Institute of Technology Ropar with interdisciplinary research exposure spanning biomaterials, biomechanics, translational biomedical engineering, and prototype-oriented healthcare innovation. Experienced in integrating engineering principles with biological systems through experimental design, biomedical prototyping, simulation-assisted analysis, and data-driven scientific evaluation.</p>
+                            <p><strong>Academic & Wet Lab Work:</strong> Academic and research work has involved biomaterial characterization, conductive biomaterials, surface modification approaches, biocompatibility-oriented design thinking, and wearable biomedical system development, with exposure to mechanobiology-inspired concepts and biomedical device functionality. Demonstrates strong capability in scientific literature review, hypothesis development, validation studies, statistical interpretation, laboratory documentation, and structured research methodology development.</p>
+                            <p><strong>Computational & Thesis Domain:</strong> Possesses working exposure to biomedical data analysis, scientific computing, computational modeling, image analysis, and AI-assisted research workflows, including familiarity with biomedical visualization tools and interdisciplinary analytical approaches. Research experience includes prototype testing, gait and plantar-pressure analysis concepts, resistance characterization, finite element-assisted evaluation, and biomechanical interpretation for functional biomedical applications.</p>
+                            <p><strong>Tools & Regulations:</strong> Technically proficient in tools and platforms including Microsoft Excel, GraphPad Prism, MATLAB, Python, ANSYS, SolidWorks, ImageJ, PowerPoint, Canva, and scientific literature databases such as PubMed and Google Scholar. Also familiar with modern medical device development workflows including validation & verification principles, risk analysis considerations, quality systems awareness, and regulatory frameworks such as ISO 13485 and FDA/MDR-oriented documentation environments.</p>
+                            <p><strong>Collaboration & Translational Vision:</strong> Demonstrates strong interdisciplinary coordination, technical communication, and research-to-prototype execution capability through collaborative innovation exposure at Indian Institute of Technology Delhi, including project leadership experience involving multi-team coordination and healthcare innovation ecosystem engagement. Interested in advancing translational healthcare technologies at the intersection of biomaterials, biomedical systems, wearable devices, biomechanics, AI-assisted healthcare research, and next-generation medical technology innovation.</p>
+                        </div>
+                        <div class="profile-summary-footer">
+                            *Hover over any node in the network to inspect specific technical definitions and experience mappings.
+                        </div>
+                    </div>
                     <div class="details-content" id="details-content" style="display: none;">
                         <span class="details-category" id="details-category">Category</span>
                         <h4 class="details-title" id="details-title">Keyword Name</h4>
                         <p class="details-desc" id="details-desc">Description of the keyword in context of biomedical engineering and research.</p>
+                        <div class="details-context-callout" id="details-context-callout">
+                            <!-- Category-specific narrative injected dynamically -->
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Skill Interaction Legend -->
             <div class="interaction-legend">
-                <p>*Hover over progress cards or explore key-term badges to view technical capability indices. Under active mentorship, all margins are designed for exponential scaling.</p>
+                <p>*Hover over progress cards or explore the network topology nodes to view technical capability indices. Under active mentorship, all margins are designed for exponential scaling.</p>
             </div>
         </section>
 
