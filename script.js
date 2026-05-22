@@ -38,59 +38,59 @@ const bookData = {
 const researchDetails = {
     mpragati: {
         title: "mPRAGATI MedTech Gateway",
-        badge: "MedTech / Translation",
-        institution: "IIT Delhi (MedTech Product Development Acceleration Gateway of India)",
+        badge: "Research Intern / MedTech",
+        institution: "mPRAGATI, IIT Delhi (June 2025 - June 2026)",
         tags: ["Medical Devices", "Product Translation", "ISO 13485", "Additive Manufacturing"],
         image: "images/Research_me.JPG",
         link: "https://mpragati.in",
         description: `
-            <p>During my pivotal one-year tenure at <strong>mPRAGATI, IIT Delhi</strong>, I was deeply involved in the translational gateway of clinical engineering. I worked closely on the frontlines of product development, helping bridge the gap between benchside medical prototypes and commercial medical devices.</p>
+            <p>During my pivotal tenure as a <strong>Research Intern at mPRAGATI, IIT Delhi (June 2025 - June 2026)</strong>, I was deeply involved in the translational gateway of clinical engineering. I worked closely on the frontlines of product development, helping bridge the gap between benchside medical prototypes and commercial medical devices.</p>
             <p>My primary responsibilities included testing prototypes, reviewing regulatory compliance standards under <strong>ISO 13485</strong> (Medical Devices Quality Management Systems) and <strong>ISO 17025</strong> (Testing and Calibration Laboratories), and assisting in establishing robust quality pipelines for innovative MedTech diagnostics.</p>
             <p>Through this experience, I gained practical knowledge of rapid prototyping methodologies, biomedical product lifecycle management, clinical validation design, and the complex pathways required for regulatory approvals in India and globally.</p>
         `
     },
     iitrpr: {
         title: "M.Tech Biomedical Research",
-        badge: "Academic / Sensors",
-        institution: "Indian Institute of Technology Ropar",
+        badge: "M.Tech / Biomedical Engineering",
+        institution: "Indian Institute of Technology Ropar (July 2024 - May 2026)",
         tags: ["Bio-Signals", "Sensor Development", "Cellular Biophysics", "MATLAB Analysis"],
         image: "images/Research.jpeg",
         link: "https://www.iitrpr.ac.in/",
         description: `
-            <p>My academic dissertation during my M.Tech at <strong>IIT Ropar</strong> focused on exploring physiological signal acquisition and the development of responsive biological sensors. I worked on characterizing electrical signals at the interface of cellular membranes to build better diagnostic instruments.</p>
+            <p>My academic dissertation during my M.Tech in Biomedical Engineering at <strong>IIT Ropar (July 2024 - May 2026)</strong> focused on exploring physiological signal acquisition and the development of responsive biological sensors. I worked on characterizing electrical signals at the interface of cellular membranes to build better diagnostic instruments.</p>
             <p>By using computational modeling and wet-lab experiments, I studied how cellular environments respond to high-frequency and low-frequency vibrations, aiming to improve the sensitivity and selectivity of early-stage diagnostic platforms.</p>
             <p>This research deepened my expertise in using MATLAB for data visualization and bio-signal processing, designing analog front-ends for medical sensors, and understanding advanced transport phenomena in microfluidic environments.</p>
         `
     },
     biomatrix: {
         title: "Bio-Matrix Development",
-        badge: "Biomaterials / Culture",
-        institution: "Academic Project",
+        badge: "B.Tech Project / Biomaterials",
+        institution: "MIET, Meerut (AKTU Lucknow, UP)",
         tags: ["Cell Culture", "Cryopreservation", "Biomaterials", "Tissue Engineering"],
         image: "images/Final Year.jpg",
         link: "",
         description: `
-            <p>In this final-year research project, I focused on addressing high logistics overheads in secondary animal cell culture. I developed novel biomaterials and biomatrix derivatives designed to stabilize cell lines during routine transport and long-term storage.</p>
+            <p>In this final-year B.Tech research project at <strong>MIET, Meerut (July 2019 - June 2023)</strong>, I focused on addressing high logistics overheads in secondary animal cell culture. I developed novel biomaterials and biomatrix derivatives designed to stabilize cell lines during routine transport and long-term storage.</p>
             <p>By optimizing cryogenic conditions and exploring alternative cryoprotectant formulations, we achieved cell recovery rates that compete with traditional liquid nitrogen pathways, but at a fraction of the structural transport cost.</p>
             <p>This project gave me extensive, hands-on wet-lab experience in mammalian cell culture protocols, cell line subculturing, cytotoxicity assays, and mechanical characterization of soft polymeric biomaterials.</p>
         `
     },
     sristi: {
         title: "BIIS-SRISTI Mentorship",
-        badge: "BIRAC / Innovation",
+        badge: "BIRAC Internship",
         institution: "BIRAC (Biotechnology Industry Research Assistance Council)",
         tags: ["Grassroots Innovation", "Frugal MedTech", "Public Health", "Mentorship"],
         image: "images/BIRAC.png",
         link: "https://drive.google.com/file/d/1NPAEGC7VsV4ImftBdmtAzFuU6prFwZ52/view?usp=drive_link",
         description: `
-            <p>Supported by the <strong>BIIS-SRISTI Mentorship program (BIRAC)</strong>, I engaged in designing frugal biomedical technologies tailored for grassroots communities in rural India.</p>
+            <p>During this internship supported by the <strong>BIIS-SRISTI Mentorship program (BIRAC)</strong>, I engaged in designing frugal biomedical technologies tailored for grassroots communities in rural India.</p>
             <p>This mentorship gave me exposure to human-centered design principles and healthcare economics. I analyzed the accessibility challenges of diagnostics in resource-constrained clinics, leading to proposals for low-cost screening platforms.</p>
             <p>The program allowed me to pitch solutions, receive constructive feedback from industry experts, and understand how government funding schemes support biotech start-ups from proof-of-concept to pilot deployments.</p>
         `
     },
     iitindore: {
         title: "Drug Discovery Internship",
-        badge: "Internship / Screening",
+        badge: "IIT Indore Internship",
         institution: "IIT Indore",
         tags: ["Drug Discovery", "Cytotoxicity Assays", "Cell Screening", "Bioinformatics"],
         image: "images/IIT-Indore.png",
@@ -347,8 +347,10 @@ function initMap() {
     // Pinpoint locations of interest
     const locations = [
         { coords: [28.6139, 77.2090], popup: "<b>New Delhi</b><br>Residence & Research Core" },
-        { coords: [30.9678, 76.5367], popup: "<b>IIT Ropar</b><br>M.Tech in Biomedical Engineering" },
-        { coords: [28.5450, 77.1926], popup: "<b>IIT Delhi (mPRAGATI)</b><br>1-Year MedTech Translation Project" },
+        { coords: [28.6032, 77.0509], popup: "<b>Modern Convent School, Dwarka</b><br>Intermediate (2019) & High School (2016) Schooling" },
+        { coords: [28.9631, 77.6410], popup: "<b>MIET Meerut</b><br>B.Tech (Affiliated with AKTU Lucknow, UP) • July 2019 - June 2023" },
+        { coords: [30.9678, 76.5367], popup: "<b>IIT Ropar</b><br>M.Tech in Biomedical Engineering • July 2024 - May 2026" },
+        { coords: [28.5450, 77.1926], popup: "<b>IIT Delhi (mPRAGATI)</b><br>Research Internship • June 2025 - June 2026" },
         { coords: [22.5204, 75.9207], popup: "<b>IIT Indore</b><br>Drug Discovery & Cytotoxicity Internship" },
         { coords: [33.0308, 74.9490], popup: "<b>Vaishno Devi Temple</b><br>Spiritual Visit" },
         { coords: [51.5074, -0.1278], popup: "<b>London, UK</b><br>Wishlist Academic & Travel Spot" }
