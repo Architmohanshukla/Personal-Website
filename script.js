@@ -305,14 +305,6 @@ function initCarousel() {
         imageCarousel.appendChild(img);
     });
 
-    // Create corner brackets for clinical monitor style
-    const brackets = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-    brackets.forEach(dir => {
-        const bracket = document.createElement('div');
-        bracket.className = `hud-bracket hud-${dir}`;
-        imageCarousel.appendChild(bracket);
-    });
-
     // Create dot navigation
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'carousel-dots';
@@ -326,28 +318,11 @@ function initCarousel() {
     });
     imageCarousel.appendChild(dotsContainer);
 
-    // Create HUD overlay
-    const hudOverlay = document.createElement('div');
-    hudOverlay.className = 'carousel-hud';
-    hudOverlay.innerHTML = `
-        <div class="hud-top-bar">
-            <span class="hud-label">SYS_VIZ: CLINICAL_MONITOR</span>
-            <span class="hud-index" id="hud-index-display">01 / ${String(imagePaths.length).padStart(2, '0')}</span>
-        </div>
-        <div class="hud-bottom-bar">
-            <span class="hud-status">STATUS: SYSTEM_CYCLE</span>
-            <span class="hud-zoom" id="hud-zoom-display">MAG: 1.00x</span>
-        </div>
-    `;
-    imageCarousel.appendChild(hudOverlay);
-
     let intervalId;
 
     function goToImage(idx) {
         const images = imageCarousel.querySelectorAll('.carousel-img');
         const dots = imageCarousel.querySelectorAll('.carousel-dot');
-        const indexDisplay = document.getElementById('hud-index-display');
-        const zoomDisplay = document.getElementById('hud-zoom-display');
         
         if (images.length === 0) return;
 
@@ -359,15 +334,6 @@ function initCarousel() {
         images[idx].classList.add('active');
         dots[idx].classList.add('active');
         currentIdx = idx;
-
-        // Update telemetry data
-        if (indexDisplay) {
-            indexDisplay.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(imagePaths.length).padStart(2, '0')}`;
-        }
-        if (zoomDisplay) {
-            const zoomVals = ['1.00x', '1.05x', '1.08x', '1.12x', '1.15x', '1.03x'];
-            zoomDisplay.textContent = `MAG: ${zoomVals[idx % zoomVals.length]}`;
-        }
 
         // Restart automatic cycle timer
         resetInterval();
@@ -1606,50 +1572,13 @@ function clearKeywordDetails() {
     content.classList.remove('details-content-animate');
 }
 
-// --- Dynamic Persona Progress Gauge Animation ---
-function animatePersonaGauges() {
-    const gaugeFills = document.querySelectorAll('.gauge-fill');
-    gaugeFills.forEach(fill => {
-        const module = fill.closest('.persona-module');
-        if (!module) return;
-        const targetValue = parseInt(module.getAttribute('data-value'), 10) || 0;
-        
-        // Circumference is 201 (2 * PI * 32 = 201.06)
-        const circumference = 201;
-        const offset = circumference - (circumference * targetValue) / 100;
-        
-        // Slightly delayed transition initialization to guarantee DOM visibility triggers transition
-        setTimeout(() => {
-            fill.style.strokeDashoffset = offset;
-        }, 150);
-    });
-}
+// Persona Gauges Animation removed
 
 // --- DOM Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Switchable About Me Tabs & sliding indicator ---
+    // --- Switchable About Me Tabs ---
     const bioTabs = document.querySelectorAll('.bio-tab');
     const bioVersions = document.querySelectorAll('.bio-version');
-    const tabIndicator = document.querySelector('.bio-tab-indicator');
-    
-    function updateTabIndicator(activeTab) {
-        if (!tabIndicator || !activeTab) return;
-        tabIndicator.style.width = `${activeTab.offsetWidth}px`;
-        tabIndicator.style.left = `${activeTab.offsetLeft}px`;
-    }
-    
-    // Initialize indicator on load
-    const initialActiveTab = document.querySelector('.bio-tab.active');
-    if (initialActiveTab) {
-        // Wait a tiny bit for fonts/layout to settle
-        setTimeout(() => updateTabIndicator(initialActiveTab), 100);
-    }
-    
-    // Listen to window resizing
-    window.addEventListener('resize', () => {
-        const currentActiveTab = document.querySelector('.bio-tab.active');
-        if (currentActiveTab) updateTabIndicator(currentActiveTab);
-    });
     
     bioTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -1660,36 +1589,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const activeVersion = document.querySelector('.bio-version.active');
             const targetVersion = document.getElementById(versionId);
-            const bioContent = document.querySelector('.bio-content');
             
-            if (!activeVersion || !targetVersion || !bioContent) return;
+            if (!targetVersion) return;
             
-            // Phase 1: Lock Height
-            const startHeight = bioContent.offsetHeight;
-            bioContent.style.height = `${startHeight}px`;
-            
-            // Phase 2: Slide Tab Indicator
+            // Switch active tab button
             bioTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            updateTabIndicator(tab);
             
-            // Phase 3: Transition Text Description
-            activeVersion.classList.remove('active');
-            activeVersion.classList.add('exiting');
-            
+            // Switch active bio version content
+            bioVersions.forEach(v => {
+                v.classList.remove('active');
+            });
             targetVersion.classList.add('active');
-            
-            // Force a reflow
-            void targetVersion.offsetHeight;
-            
-            // Phase 4: Release Height
-            const endHeight = targetVersion.offsetHeight;
-            bioContent.style.height = `${endHeight}px`;
-            
-            setTimeout(() => {
-                activeVersion.classList.remove('exiting');
-                bioContent.style.height = '';
-            }, 400); // matches transition time
         });
     });
 
@@ -1758,7 +1669,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initTheme();
     initCarousel();
-    animatePersonaGauges();
     initObservers();
     initSkillsHover();
     initMap();

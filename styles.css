@@ -387,7 +387,7 @@ body.scrolled .top-bar {
    ========================================================================== */
 .about-bento-grid {
     display: grid;
-    grid-template-columns: 0.6fr 0.6fr 0.8fr;
+    grid-template-columns: 1.1fr 0.9fr;
     grid-template-rows: auto auto;
     gap: 25px;
     text-align: left;
@@ -403,8 +403,8 @@ body.scrolled .top-bar {
 
 /* Cell A: Main Bio */
 .bento-main-bio {
-    grid-column: span 2;
-    grid-row: span 1;
+    grid-column: 1;
+    grid-row: 1;
 }
 
 .bento-main-bio h3 {
@@ -423,63 +423,10 @@ body.scrolled .top-bar {
     margin-bottom: 0;
 }
 
-/* Biography Console Status Bar */
-.bio-status-bar {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: var(--text-secondary);
-    user-select: none;
-}
-
-.status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-pulse {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #10b981;
-    box-shadow: 0 0 8px #10b981;
-    animation: statusPulseAnimation 1.5s infinite alternate;
-}
-
-.status-text {
-    color: #10b981;
-    font-weight: bold;
-}
-
-.status-telemetry {
-    display: flex;
-    gap: 15px;
-}
-
-@keyframes statusPulseAnimation {
-    0% {
-        opacity: 0.4;
-        transform: scale(0.9);
-        box-shadow: 0 0 4px rgba(16, 185, 129, 0.4);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.15);
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
-    }
-}
-
 /* Cell B: Trajectory Steps */
 .bento-timeline {
-    grid-column: 3;
-    grid-row: span 2;
+    grid-column: 2;
+    grid-row: 2;
     justify-content: flex-start;
 }
 
@@ -553,7 +500,7 @@ body.scrolled .top-bar {
 /* Cell C: Interactive Persona (Passions) */
 .bento-persona {
     grid-column: 1;
-    grid-row: span 1;
+    grid-row: 2;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -568,242 +515,41 @@ body.scrolled .top-bar {
 .persona-matrix-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 12px;
 }
 
-/* Individual Module Accent Variables */
-.persona-module.biotech {
-    --module-color: #6366f1;
-    --module-color-rgb: 99, 102, 241;
-}
-
-.persona-module.medtech {
-    --module-color: #06b6d4;
-    --module-color-rgb: 6, 182, 212;
-}
-
-.persona-module.photography {
-    --module-color: #ec4899;
-    --module-color-rgb: 236, 72, 153;
-}
-
-.persona-module.culinary {
-    --module-color: #f59e0b;
-    --module-color-rgb: 245, 158, 11;
-}
-
-.persona-module {
-    position: relative;
+.persona-block {
     background: var(--bg-accent);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 16px 20px;
+    border-radius: 12px;
+    padding: 12px 18px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    overflow: hidden;
+    gap: 10px;
     cursor: default;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-                border-color 0.3s ease,
-                box-shadow 0.3s ease;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
 }
 
-.persona-module::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 10% 20%, rgba(var(--module-color-rgb), 0.05) 0%, transparent 60%);
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    opacity: 0.5;
+.persona-block:hover {
+    background-color: rgba(var(--accent-color-rgb), 0.05);
+    border-color: rgba(var(--accent-color-rgb), 0.2);
+    transform: translateY(-2px);
 }
 
-.persona-module:hover::before {
-    opacity: 1;
+.persona-icon {
+    font-size: 1.5rem;
 }
 
-.persona-module:hover {
-    transform: translateY(-4px);
-    border-color: rgba(var(--module-color-rgb), 0.4);
-    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3), 
-                0 0 12px rgba(var(--module-color-rgb), 0.15);
-}
-
-body.light-theme .persona-module:hover {
-    box-shadow: 0 10px 25px -10px rgba(var(--module-color-rgb), 0.15), 
-                0 0 12px rgba(var(--module-color-rgb), 0.1);
-}
-
-/* Background Animated Signal Wave */
-.persona-signal-wave {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 200%;
-    height: 40px;
-    opacity: 0.08;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.persona-module:hover .persona-signal-wave {
-    opacity: 0.2;
-}
-
-.persona-signal-wave path {
-    fill: none;
-    stroke: var(--module-color);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    animation: flowSignal 4s linear infinite;
-}
-
-.persona-module.medtech .persona-signal-wave path {
-    animation-duration: 3s;
-}
-
-.persona-module.photography .persona-signal-wave path {
-    animation-duration: 5s;
-}
-
-.persona-module.culinary .persona-signal-wave path {
-    animation-duration: 4.5s;
-}
-
-@keyframes flowSignal {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Gauge Circle Dials */
-.persona-gauge-wrapper {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.persona-gauge {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-}
-
-.gauge-track {
-    fill: none;
-    stroke: var(--border-color);
-    stroke-width: 3.5;
-}
-
-.gauge-fill {
-    fill: none;
-    stroke: var(--module-color);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 201;
-    stroke-dashoffset: 201;
-    transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    filter: drop-shadow(0 0 3px rgba(var(--module-color-rgb), 0.5));
-}
-
-.gauge-dots {
-    fill: none;
-    stroke: var(--module-color);
-    stroke-width: 1.2;
-    stroke-dasharray: 2 6;
-    opacity: 0.35;
-    transform-origin: center;
-    animation: rotateDots 20s linear infinite;
-}
-
-.persona-module.medtech .gauge-dots,
-.persona-module.culinary .gauge-dots {
-    animation-direction: reverse;
-}
-
-@keyframes rotateDots {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.persona-center-icon {
-    position: absolute;
-    font-size: 1.35rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-}
-
-.persona-module:hover .persona-center-icon {
-    transform: scale(1.18);
-}
-
-/* Module Text Details & HUD */
-.persona-details {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    z-index: 2;
-}
-
-.persona-details h4 {
+.persona-text h4 {
     font-size: 0.95rem;
     font-weight: 600;
-    margin: 0;
+    margin-bottom: 1px;
     color: var(--text-primary);
-    transition: color 0.3s ease;
 }
 
-.persona-module:hover h4 {
-    color: var(--module-color);
-}
-
-.persona-sub {
-    font-size: 0.76rem;
+.persona-text span {
+    font-size: 0.75rem;
     color: var(--text-secondary);
-}
-
-.persona-telemetry {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 3px;
-}
-
-.persona-telemetry-tag {
-    font-family: monospace;
-    font-size: 0.65rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(var(--module-color-rgb), 0.08);
-    border: 1px solid rgba(var(--module-color-rgb), 0.15);
-    color: var(--module-color);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-}
-
-.persona-telemetry-status {
-    font-family: monospace;
-    font-size: 0.62rem;
-    color: var(--text-secondary);
-    opacity: 0.6;
-    letter-spacing: 0.05em;
 }
 
 /* Small Viewport Stacking for Persona Grid */
@@ -813,46 +559,20 @@ body.light-theme .persona-module:hover {
         gap: 12px;
     }
     
-    .persona-module {
-        padding: 12px 18px;
+    .persona-block {
+        padding: 10px 14px;
     }
 }
 
-/* Cell D: Media Carousel (Laboratory Diagnostics Monitor Style) */
+/* Cell D: Media Carousel */
 .bento-media {
     grid-column: 2;
-    grid-row: span 1;
+    grid-row: 1;
     position: relative;
     padding: 12px;
     display: flex;
     flex-direction: column;
-    background: #050811;
-    border: 2px solid rgba(var(--accent-secondary-rgb), 0.2);
-    border-radius: 16px;
     overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.bento-media:hover {
-    border-color: rgba(var(--accent-secondary-rgb), 0.45);
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(var(--accent-secondary-rgb), 0.15);
-}
-
-/* Subtle CRT Scanline overlay */
-.bento-media::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
-    background-size: 100% 4px, 6px 100%;
-    z-index: 4;
-    pointer-events: none;
-    opacity: 0.45;
 }
 
 .image-carousel {
@@ -873,120 +593,13 @@ body.light-theme .persona-module:hover {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transform: scale(1.08) translateZ(0);
-    filter: brightness(0.85) contrast(1.05) saturate(0.95);
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.8s ease;
     z-index: 1;
 }
 
 .carousel-img.active {
     opacity: 1;
-    transform: scale(1.0) translateZ(0);
     z-index: 2;
-}
-
-/* Scanner overlay scanner effect */
-.scanner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.scanner-line {
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    left: 0;
-    background: linear-gradient(to right, transparent, var(--accent-secondary), transparent);
-    box-shadow: 0 0 10px var(--accent-secondary);
-    animation: scanEffect 4.5s linear infinite;
-}
-
-@keyframes scanEffect {
-    0% { top: 0%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-}
-
-/* HUD telemetry indicators overlay */
-.carousel-hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 6;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 12px;
-    font-family: 'Outfit', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.05em;
-}
-
-.hud-top-bar, .hud-bottom-bar {
-    display: flex;
-    justify-content: space-between;
-    color: rgba(255, 255, 255, 0.6);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-.hud-label, .hud-index, .hud-status, .hud-zoom {
-    background: rgba(0, 0, 0, 0.55);
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-
-.hud-index, .hud-zoom {
-    color: var(--accent-secondary);
-    font-weight: 600;
-}
-
-/* HUD Corner Brackets */
-.hud-bracket {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-color: var(--accent-secondary);
-    border-style: solid;
-    pointer-events: none;
-    z-index: 7;
-    opacity: 0.8;
-}
-
-.hud-top-left {
-    top: 10px;
-    left: 10px;
-    border-width: 2px 0 0 2px;
-}
-
-.hud-top-right {
-    top: 10px;
-    right: 10px;
-    border-width: 2px 2px 0 0;
-}
-
-.hud-bottom-left {
-    bottom: 10px;
-    left: 10px;
-    border-width: 0 0 2px 2px;
-}
-
-.hud-bottom-right {
-    bottom: 10px;
-    right: 10px;
-    border-width: 0 2px 2px 0;
 }
 
 /* Carousel dots navigation */
@@ -1907,19 +1520,6 @@ footer {
     z-index: 1;
 }
 
-.bio-tab-indicator {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    height: calc(100% - 8px);
-    background: var(--accent-gradient);
-    border-radius: 20px;
-    box-shadow: 0 4px 12px -3px var(--accent-color);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 0;
-    pointer-events: none;
-}
-
 .bio-tab {
     background: transparent;
     border: none;
@@ -1931,7 +1531,7 @@ footer {
     font-family: 'Outfit', sans-serif;
     border-radius: 20px;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 2;
 }
 
@@ -1940,14 +1540,13 @@ footer {
 }
 
 .bio-tab.active {
+    background: var(--accent-gradient);
     color: #ffffff;
-    background: transparent;
-    box-shadow: none;
+    box-shadow: 0 4px 12px -3px var(--accent-color);
 }
 
 .bio-content {
     position: relative;
-    transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     overflow: hidden;
 }
 
@@ -1958,15 +1557,13 @@ footer {
     width: 100%;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(15px);
-    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s;
+    transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 .bio-version.active {
     position: relative;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
     z-index: 2;
 }
 
@@ -1974,7 +1571,6 @@ footer {
     position: absolute;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-15px);
     z-index: 1;
 }
 
