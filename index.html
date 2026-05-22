@@ -4,408 +4,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tillana&display=swap" />
-    <!-- Add this line to the head of your HTML file -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="description" content="Portfolio of Archit Mohan Shukla - Biomedical Engineer, IIT Ropar Alumnus, and MedTech Researcher at IIT Delhi (mPRAGATI). Delving into the intersection of biology, medical technology, and computation.">
+    <title>Archit Mohan Shukla | Biomedical Engineer</title>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕉️</text></svg>">
-    <!-- Add these lines to the head of your HTML file -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+    
+    <!-- Leaflet.js for interactive mapping -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <title>ARCHIT</title>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <nav class="navigation">  <!-- Top Bar -->
-<div class="top-bar">
-    <div class="logo" onclick="navigateToHomePage()">ARCHIT MOHAN SHUKLA</div>
-    <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about-me">About Me</a>
-        <a href="#skills">Skills</a>
-        <a href="#research">Research</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#more">More</a>
-    </div>
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <span id="theme-icon">🌙;</span>
-    </div>
-</div>
-</nav>
-<main>  <!-- Home Section -->
-<!-- Home Section -->
-<section id="home" class="section">
-    <div class="content">  
-        <div class="home-text">
-            <h5>Hello There 🙋‍♂️!</h5>
-            <h1>I'm Archit Mohan Shukla</h1>
-            <h2>Tech Enthusiast & Student</h2>
-            <p>Embarking on the intersection of Bio & Tech, exploring the dynamic relationship between energy and biology, encompassing skills in self-help and recreation pursuits.</p>
-        </div>
-    </div>
-
-    <!-- Circular background for emojis -->
-    <div class="emoji-circle">
-        <!-- Stylized line of emojis below the text -->
-        <span>🧬</span> <!-- DNA emoji -->
-        <span>💻</span> <!-- Laptop emoji -->
-        <span>🔬</span> <!-- Pipette emoji -->
-        <span>📷</span> <!-- Camera emoji -->
-        <span>📚</span> <!-- Books emoji -->
-        <span>🧑‍🍳</span> <!-- Cooking-related emoji -->
-    </div>
-    
-</section>
-
-</main>
-
-<!-- About Me Section -->
-<section id="about-me" class="section">
-
-    <section class="contents fade-in">
-        <div class="text-section">
-            <h2>Hello There, I'm Archit</h2>
-            <p>A tech enthusiast and a keen Biotechnologist from New Delhi, India. I leverage technology to my advantage, showcasing my skills in PowerPoint and web development (HTML, CSS, JavaScript).</p>
-            <p>With a graduate degree in Biotechnology, I delve into the intersection of energy, vibrations, and biology—studying how cells respond to their environment.</p>
-            <p>Passionate about self-help and recreation, I enjoy reading books on personal development. My active recreation involves cooking, photography, and, currently, web development.</p>
-            <p>Focused on academics, I aim to explore the energy and vibration aspects of biology and cells in the future.</p>
-        </div>
-
-        <div class="image-section">
-            <div id="image-carousel" class="image-carousel">
-                <!-- Images will be dynamically added here by JavaScript -->
+    <!-- Navigation Top Bar -->
+    <nav class="navigation">
+        <div class="top-bar">
+            <div class="logo" onclick="navigateToHomePage()">ARCHIT</div>
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#about-me">About Me</a>
+                <a href="#skills">Skills</a>
+                <a href="#research">Research</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#more">More</a>
+            </div>
+            <div class="theme-toggle" id="theme-toggle">
+                <span id="theme-icon">🌙</span>
             </div>
         </div>
-    </section>        
-   
-</section>
+    </nav>
 
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section animate">
+            <!-- Custom cellular/bio-signal interaction canvas -->
+            <canvas id="bio-canvas"></canvas>
+            
+            <div class="content">
+                <div class="home-text">
+                    <h5>Welcome To My Space 🙋‍♂️</h5>
+                    <h1>Archit Mohan Shukla</h1>
+                    <h2>Biomedical Engineer & MedTech Researcher</h2>
+                    <p>M.Tech from IIT Ropar & former researcher at mPRAGATI (IIT Delhi). I design medical device solutions, analyze biological signals, and explore the dynamic vibrations governing cellular environments.</p>
+                    <div class="home-ctas">
+                        <a href="#research" class="btn btn-primary">View My Research</a>
+                        <a href="#about-me" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
 
-<!-- Skills Section -->
-<section id="skills" class="section">
-    
-        <h2>Skills</h2>
-        <div class="content">
-        <!-- Technical Skills -->
-        <div class="skill" id="technical-skill">
-            <div class="skill-header">
-                <div class="skill-name">Technical Skills</div>
+                <!-- Animated Emojis Badge Panel -->
+                <div class="emoji-circle">
+                    <span title="DNA / Genetics">🧬</span>
+                    <span title="Medical Diagnostics / Code">💻</span>
+                    <span title="Microscopy / Lab Analysis">🔬</span>
+                    <span title="Photography">📷</span>
+                    <span title="Scientific Literature">📚</span>
+                    <span title="Culinary Art">🧑‍🍳</span>
+                </div>
             </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" data-width="70%"></div>
-            </div>
-            <div class="sub-skills">
-                <div class="sub-skill" data-width="80%">Technical Writing</div>
-                <div class="sub-skill" data-width="80%">Wet Lab Techniques</div>
-                <div class="sub-skill" data-width="75%">Dry Lab Techniques</div>
-                <div class="sub-skill" data-width="75%">Understanding of Code (Debugging)</div>
-                <div class="sub-skill" data-width="85%">Googling and AI</div>
-            </div>
-        </div>
+        </section>
 
-        <!-- Language Skills -->
-        <div class="skill" id="language-skill">
-            <div class="skill-header">
-                <div class="skill-name">Language Skills</div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" data-width="90%"></div>
-            </div>
-            <div class="sub-skills">
-                <div class="sub-skill" data-width="95%">Hindi (Mother Tongue)</div>
-                <div class="sub-skill" data-width="90%">English</div>
-                <div class="sub-skill" data-width="50%"><a href="https://www.duolingo.com/profile/ArchitMoha2" target="_blank" rel="noopener noreferrer">German (Duolingo Profile)</a></div>
-            </div>
-        </div>
+        <!-- About Me Section -->
+        <section id="about-me" class="section fade-in">
+            <h2>About Me</h2>
+            <div class="about-bento-grid">
+                <!-- Cell A: Main Bio -->
+                <div class="bento-card glass-panel bento-main-bio">
+                    <h3>Hello There, I'm Archit</h3>
+                    <p>I am a Biomedical Engineer driven by a passion to engineer technology that directly improves human healthcare. My academic and research path bridges the gap between biotechnology, engineering physics, and clinical translation.</p>
+                    <p>I completed my <strong>Master of Technology (M.Tech) in Biomedical Engineering at IIT Ropar</strong>. This intensive training empowered me to combine wet-lab biological protocols with computational tools and engineering methodologies.</p>
+                    <p>Subsequently, I spent a pivotal year at <strong>IIT Delhi</strong> working with <strong>mPRAGATI</strong> (MedTech Product Development Acceleration Gateway of India). Here, I worked on the frontlines of product translation—assisting in scaling medical diagnostic concepts toward clinical reality, navigating fabrication standards, and aligning projects with ISO 13485 requirements.</p>
+                </div>
 
-        <!-- Soft Skills -->
-        <div class="skill" id="soft-skill">
-            <div class="skill-header">
-                <div class="skill-name">Soft Skills</div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" data-width="80%"></div>
-            </div>
-            <div class="sub-skills">
-                <div class="sub-skill" data-width="85%">Communication</div>
-                <div class="sub-skill" data-width="85%">Leadership</div>
-                <div class="sub-skill" data-width="80%">Teamwork</div>
-                <div class="sub-skill" data-width="85%">Time Management</div>
-                <div class="sub-skill" data-width="80%">Adaptability</div>
-            </div>
-        </div>
-    </div>
-        <!-- Skill Interaction Legend -->
-        <div class="interaction-legend">
-            <p><span></span>*When hovered upon each skill-set, the bar goes 100%, means under guidance and proper mentorship there is scope for improvement</p>
-        </div>
-</section>
+                <!-- Cell B: Career Trajectory (Timeline) -->
+                <div class="bento-card glass-panel bento-timeline">
+                    <h3>Trajectory & Milestones</h3>
+                    <div class="bento-timeline-list">
+                        <div class="timeline-step">
+                            <div class="step-year">2023 - 2024</div>
+                            <h4>IIT Delhi (mPRAGATI)</h4>
+                            <p>MedTech translation, diagnostic product acceleration & ISO 13485 translation pathways.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-year">2021 - 2023</div>
+                            <h4>IIT Ropar</h4>
+                            <p>M.Tech in Biomedical Engineering. Researched bio-signals, cell environments & sensors.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-year">2018 - 2021</div>
+                            <h4>B.Sc. Biotechnology & Projects</h4>
+                            <p>Foundations in cell culture, biomaterials research, and extraction methodologies.</p>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Research Section -->
-<section id="research" class="section">
-    <div class="container">
-        <!-- Creative Background with Parallax Effect -->
-        <div class="contentt">
-            <h2>Research</h2>
-
-        <!-- Research Subsection: Projects -->
-        <div class="research-subsection">
-            <h3>Projects & Internships</h3>
-            <div class="project-container">
-                <!-- Project Cards with Flip Animation -->
-                <div class="project">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/Final Year.jpg" alt="Project 1">
+                <!-- Cell C: Passions & Credentials (Persona) -->
+                <div class="bento-card glass-panel bento-persona">
+                    <h3>Persona & Passions</h3>
+                    <div class="persona-matrix-grid">
+                        <div class="persona-block">
+                            <span class="persona-icon">🧬</span>
+                            <div class="persona-text">
+                                <h4>Biotech R&D</h4>
+                                <span>Cellular Diagnostics</span>
                             </div>
-                            <div class="card-back">
+                        </div>
+                        <div class="persona-block">
+                            <span class="persona-icon">💻</span>
+                            <div class="persona-text">
+                                <h4>MedTech Code</h4>
+                                <span>Computational Bio</span>
+                            </div>
+                        </div>
+                        <div class="persona-block">
+                            <span class="persona-icon">📷</span>
+                            <div class="persona-text">
+                                <h4>Photography</h4>
+                                <span>Landscape & Macro</span>
+                            </div>
+                        </div>
+                        <div class="persona-block">
+                            <span class="persona-icon">🧑‍🍳</span>
+                            <div class="persona-text">
+                                <h4>Culinary Arts</h4>
+                                <span>Experimentation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cell D: Media Carousel (Laboratory Diagnostics Monitor Style) -->
+                <div class="bento-card bento-media">
+                    <div id="image-carousel" class="image-carousel">
+                        <!-- Images dynamically cycled by script.js -->
+                    </div>
+                    <div class="scanner-overlay">
+                        <div class="scanner-line"></div>
+                    </div>
+                    <div class="scanner-frame-text">DIAGNOSTIC_SCAN: ACTIVE</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section fade-in">
+            <h2>Skills</h2>
+            <div class="content">
+                <!-- Technical & Bio-Engineering Skills -->
+                <div class="skill glass-panel" id="technical-skill">
+                    <div class="skill-header">
+                        <span class="skill-icon">🧬</span>
+                        <div class="skill-name">Biomedical & Lab</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-width="85%"></div>
+                    </div>
+                    <div class="sub-skills">
+                        <div class="sub-skill" data-width="90%">Medical Device Design <span class="sub-skill-percent">90%</span></div>
+                        <div class="sub-skill" data-width="85%">ISO 13485 Standards <span class="sub-skill-percent">85%</span></div>
+                        <div class="sub-skill" data-width="80%">Wet Lab & Cell Culture <span class="sub-skill-percent">80%</span></div>
+                        <div class="sub-skill" data-width="85%">Technical Writing <span class="sub-skill-percent">85%</span></div>
+                        <div class="sub-skill" data-width="75%">Bio-Signal Processing <span class="sub-skill-percent">75%</span></div>
+                    </div>
+                </div>
+
+                <!-- Software & Computation Skills -->
+                <div class="skill glass-panel" id="software-skill">
+                    <div class="skill-header">
+                        <span class="skill-icon">💻</span>
+                        <div class="skill-name">Software & Code</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-width="80%"></div>
+                    </div>
+                    <div class="sub-skills">
+                        <div class="sub-skill" data-width="80%">MATLAB & Data Plotting <span class="sub-skill-percent">80%</span></div>
+                        <div class="sub-skill" data-width="75%">Python Coding <span class="sub-skill-percent">75%</span></div>
+                        <div class="sub-skill" data-width="80%">Web Development (HTML/CSS/JS) <span class="sub-skill-percent">80%</span></div>
+                        <div class="sub-skill" data-width="85%">Code Debugging & Diagnostics <span class="sub-skill-percent">85%</span></div>
+                        <div class="sub-skill" data-width="90%">AI-Assisted R&D <span class="sub-skill-percent">90%</span></div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills & Languages -->
+                <div class="skill glass-panel" id="soft-skill">
+                    <div class="skill-header">
+                        <span class="skill-icon">🗣️</span>
+                        <div class="skill-name">Communication & Soft</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" data-width="85%"></div>
+                    </div>
+                    <div class="sub-skills">
+                        <div class="sub-skill" data-width="90%">Communication & Presentation <span class="sub-skill-percent">90%</span></div>
+                        <div class="sub-skill" data-width="85%">Leadership & Collaboration <span class="sub-skill-percent">85%</span></div>
+                        <div class="sub-skill" data-width="95%">Hindi (Mother Tongue) <span class="sub-skill-percent">95%</span></div>
+                        <div class="sub-skill" data-width="90%">English (Professional) <span class="sub-skill-percent">90%</span></div>
+                        <div class="sub-skill" data-width="50%"><a href="https://www.duolingo.com/profile/ArchitMoha2" target="_blank" rel="noopener noreferrer">German (Duolingo)</a> <span class="sub-skill-percent">50%</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Skill Interaction Legend -->
+            <div class="interaction-legend">
+                <p>*Hover over cards to activate capability indices. Under active mentorship, all margins are designed for exponential scaling.</p>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="research" class="section fade-in">
+            <h2>Research & Projects</h2>
+            
+            <!-- Subsection: Projects -->
+            <div class="research-subsection">
+                <h3>Translation & Development Projects</h3>
+                <div class="research-bento-grid">
+                    <!-- mPRAGATI Card -->
+                    <div class="research-card" onclick="openDetailsDrawer('mpragati')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">MedTech</span>
+                            <img src="images/Research_me.JPG" alt="mPRAGATI IIT Delhi Project">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>mPRAGATI MedTech Gateway</h3>
+                                <h5>IIT Delhi • 1-Year Translation Project</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#ISO13485 #Diagnostics</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IIT Ropar Card -->
+                    <div class="research-card" onclick="openDetailsDrawer('iitrpr')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Academic</span>
+                            <img src="images/Research.jpeg" alt="IIT Ropar Research">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>M.Tech Biomedical Research</h3>
+                                <h5>IIT Ropar • Dissertation</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#BioSignal #Sensors</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bio-Matrix Card -->
+                    <div class="research-card" onclick="openDetailsDrawer('biomatrix')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Biomaterials</span>
+                            <img src="images/Final Year.jpg" alt="Bio-Matrix Project">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
                                 <h3>Bio-Matrix Development</h3>
-                                <h5>Final Year Project</h5>
-                                <p>Developed bio-matrix and derivatives for animal cell culture.</p>
-                                <a href="#" class="details-link">Learn More.</a>
+                                <h5>Final Year Project • Cell Culture</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#CellCulture #Cryo</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BIIS-SRISTI Card -->
+                    <div class="research-card" onclick="openDetailsDrawer('sristi')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">BIRAC</span>
+                            <img src="images/BIRAC.png" alt="BIIS-SRISTI Mentorship">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>BIIS-SRISTI Mentorship</h3>
+                                <h5>Grassroots Innovation</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#Innovation #Mentorship</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IIT-Indore Card -->
+                    <div class="research-card" onclick="openDetailsDrawer('iitindore')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Internship</span>
+                            <img src="images/IIT-Indore.png" alt="IIT Indore Internship">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>Drug Discovery Internship</h3>
+                                <h5>IIT Indore • Laboratory</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#DrugDiscovery #Cytotoxicity</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="project">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/BIRAC.png" alt="BIIS-SRISTI">
+            </div>
+
+            <!-- Subsection: Publications -->
+            <div class="research-subsection">
+                <h3>Scientific Publications</h3>
+                <div class="research-bento-grid">
+                    <!-- Erecta Publication -->
+                    <div class="research-card" onclick="openDetailsDrawer('erecta')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Publication</span>
+                            <img src="images/erecta.png" alt="Phytochemical Tagetes erecta publication">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>Tagetes erecta Extraction</h3>
+                                <h5>IJPB Journal • 2022</h5>
                             </div>
-                            <div class="card-back">
-                                <h3>BIIS-SRISTI</h3>
-                                <h5>Internship</h5>
-                                <p>Received mentorship regarding Grassroots Innovations.</p>
-                                <a href="https://drive.google.com/file/d/1NPAEGC7VsV4ImftBdmtAzFuU6prFwZ52/view?usp=drive_link" target="_blank" class="details-link">Learn More</a>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#Phytochemicals #Bioprocessing</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Officinale Publication -->
+                    <div class="research-card" onclick="openDetailsDrawer('officinale')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Publication</span>
+                            <img src="images/Officinale.png" alt="Flavonoids Zingiber officinale publication">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>Zingiber officinale Study</h3>
+                                <h5>RRJoP Journal • 2022</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#Flavonoids #Pharmacology</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Papaya Publication -->
+                    <div class="research-card" onclick="openDetailsDrawer('papaya')">
+                        <div class="card-image-wrapper">
+                            <span class="card-badge">Conference</span>
+                            <img src="images/Anna.png" alt="Carica Papaya publication">
+                        </div>
+                        <div class="card-info-pane">
+                            <div>
+                                <h3>Carica Papaya Flavonoids</h3>
+                                <h5>CBSD Conference • 2022</h5>
+                            </div>
+                            <div class="card-footer-meta">
+                                <span class="card-tag-preview">#Conference #PhytoChemistry</span>
+                                <span class="explore-trigger">Explore <span class="arrow">→</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="project">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/IIT-Indore.png" alt="IIT-Indore">
-                            </div>
-                            <div class="card-back">
-                                <h3>IIT-Indore</h3>
-                                <h5>Internship</h5>
-                                <p>Principles of Drug Discovery and Development.</p>
-                                <a href="https://drive.google.com/file/d/1r_6xNcPU5jhduv6nt9aIat_w-FOmDL_5/view?usp=drive_link" target="_blank" class="details-link">Learn More</a>
-                            </div>
+            </div>
+        </section>
+
+        <!-- Interactive Map Section -->
+        <section id="map-section" class="section fade-in">
+            <h2>Academic Footprint & Travels</h2>
+            <p>From New Delhi to IIT Ropar, my academic trajectory traverses premier institutes of technology in India, alongside my personal footprint and destinations I plan to explore.</p>
+            <div id="map"></div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="section fade-in">
+            <h2>Photography Portfolio</h2>
+            <div class="portfolio-container">
+                <div class="portfolio-item">
+                    <img src="images/Abstract_Stiry.jpg" alt="Abstract Photography Story">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-overlay-text">Abstract Light Painting</div>
+                        <a href="https://archit-photogallery.netlify.app/" target="_blank">View Gallery</a>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="images/nature1.webp" alt="Landscape Nature Photography">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-overlay-text">Mountain Vistas</div>
+                        <a href="https://archit-photogallery.netlify.app/" target="_blank">View Gallery</a>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="images/monkey_portrait03.JPG" alt="Wildlife Portrait monkey">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-overlay-text">Fauna Portraiture</div>
+                        <a href="https://archit-photogallery.netlify.app/" target="_blank">View Gallery</a>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="images/abs5.jpeg" alt="Macro Abstract Artwork">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-overlay-text">Macro Textures</div>
+                        <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="images/abs8.jpeg" alt="Symmetric Abstract Graphics">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-overlay-text">Symmetric Energy</div>
+                        <a href="https://archit-photogallery.netlify.app/" target="_blank">View Gallery</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accomplishments & Books Section -->
+        <section id="more" class="section fade-in">
+            <h2>More Accomplishments</h2>
+            
+            <!-- Accomplishments Section -->
+            <div id="accomplishments">
+                <div class="certificate-cards">
+                    <!-- Academic Certificate -->
+                    <div class="certificate-card glass-panel">
+                        <img src="images/AcademicCertifiate.webp" alt="Academic Excellence Certificate">
+                        <h3>Academic Excellence</h3>
+                        <p>Awarded for high-level academic rankings during education tenures.</p>
+                        <a href="https://drive.google.com/drive/folders/1--vePxerNimo7M93XGw9kawdEplqPIWZ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+                    </div>
+
+                    <!-- Co-Curricular Certificate -->
+                    <div class="certificate-card glass-panel">
+                        <img src="images/Co-curricular certificate.jpg" alt="Co-Curricular Achievements Certificate">
+                        <h3>Co-Curricular Honors</h3>
+                        <p>Honored for active leadership in college committees and community engagement.</p>
+                        <a href="https://drive.google.com/drive/folders/1vOXL3YzQm15g-Yp7Krbpg1It4kExAtNQ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+                    </div>
+
+                    <!-- Coursera Certificate -->
+                    <div class="certificate-card glass-panel">
+                        <img src="images/coursera-course-certificate.webp" alt="Coursera Certifications">
+                        <h3>Technical Certifications</h3>
+                        <p>Acquired credentials in digital platforms, instrumentation, and computational tools.</p>
+                        <a href="https://drive.google.com/drive/folders/1IniLB3Bkx9L5a0_-tPSp9vhHhkPehPCs?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Section -->
+            <div id="books">
+                <h2>Interactive Library</h2>
+                <p>Read detailed book reviews and my notes on literature that impacts my philosophy toward science and mindsets.</p>
+                <div class="books-container">
+                    <div class="book-item" data-book="belief">
+                        <img src="images/Biology of Belief.png" alt="Biology of Belief Cover">
+                        <div class="book-overlay">
+                            <h3>Biology Of Belief</h3>
+                            <span>Read Summary</span>
+                        </div>
+                    </div>
+                    <div class="book-item" data-book="monk">
+                        <img src="images/Think Like a Monk.jpg" alt="Think Like a Monk Cover">
+                        <div class="book-overlay">
+                            <h3>Think Like a Monk</h3>
+                            <span>Read Summary</span>
+                        </div>
+                    </div>
+                    <div class="book-item" data-book="mindset">
+                        <img src="images/The Mindset.jpeg" alt="The Mindset Cover">
+                        <div class="book-overlay">
+                            <h3>The Mindset</h3>
+                            <span>Read Summary</span>
+                        </div>
+                    </div>
+                    <div class="book-item" data-book="subconscious">
+                        <img src="images/The Power of your subconscious Mind.jpg" alt="The Power of your Subconscious Mind Cover">
+                        <div class="book-overlay">
+                            <h3>Power of Subconscious</h3>
+                            <span>Read Summary</span>
+                        </div>
+                    </div>
+                    <div class="book-item" data-book="limits">
+                        <img src="images/Life Without Limits.jpg" alt="Life Without Limits Cover">
+                        <div class="book-overlay">
+                            <h3>Life Without Limits</h3>
+                            <span>Read Summary</span>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+    </main>
 
-                <!-- Add more project cards as needed -->
-            </div>
-        </div>
-
-        <!-- Research Subsection: Publications -->
-        <div class="research-subsection">
-            <h3>Publications</h3>
-            <div class="publication-container">
-                <!-- Publication Cards with Flip Animation -->
-                <div class="publication">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/erecta.png" alt="Paper">
-                            </div>
-                            <div class="card-back">
-                                <h4>Studies on Qualitative and Quantitative Analysis of Phytochemicals from Petals and Leaves of Tagetes erecta</h4>
-                                <h5>Surya Prakash Dv, Archit Mohan Shukla, Ritika Ritika, Mohammad Munawar T., International Journal of Plant Biotechnology, 2022</h5>
-                                <a href="https://biotech.journalspub.info/?journal=IJPB&page=article&op=view&path%5B%5D=737" target="_blank" class="details-link">Give a Read</a>        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="publication">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/Officinale.png" alt="Paper">
-                            </div>
-                            <div class="card-back">
-                                <h4>Studies on Extraction of Flavonoids from Peel of Zingiber officinale</h4>
-                                <h5>Archit Mohan Shukla, Akshat Agarwal, Amarjeet Redhu, Surya Prakash D.V., Research & Reviews: A Journal of Pharmacology, 2022</h5>
-                                <a href="https://pharmajournals.stmjournals.in/index.php/RRJoP/article/view/1172" target="_blank" class="details-link">Give a Read</a>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="publication">
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="images/Anna.png" alt="Certificate">
-                            </div>
-                            <div class="card-back">
-                                <h4>Studies on Extraction of Flavonoids from Seeds of Carica Papaya</h4>
-                                <h5>Archit Mohan Shukla, Surya Prakash D.V., Presented at the 4th International Conference by CBSD Annamalai University, 2022</h5>
-                                <a href="https://drive.google.com/file/d/1hLN0hRdnoXpR1OAFGFz0ztM6YitUccMf/view?usp=drive_link" target="_blank" class="details-link">View</a>        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add more publication cards as needed -->
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- Portfolio Section -->
-<section id="portfolio" class="section">
-    <section class="contentt fade-in">
-        <h2>Portfolio</h2>
-    <div class="portfolio-container">
-          <div class="portfolio-item">
-            <img src="images/Abstract_Stiry.jpg" alt="Portfolio">
-            <div class="portfolio-overlay">
-                <div class="portfolio-overlay-text"></div>
-                <a href="https://archit-photogallery.netlify.app/" target="_blank">View Portfolio</a>
-            </div>
-        </div>
-        <div class="portfolio-item">
-            <img src="images/nature1.webp" alt="Portfolio">
-            <div class="portfolio-overlay">
-                <div class="portfolio-overlay-text"></div>
-                <a href="https://archit-photogallery.netlify.app/" target="_blank">View Portfolio</a>
-            </div>
-        </div>
-        <div class="portfolio-item">
-            <img src="images/monkey_portrait03.JPG" alt="Portfolio">
-            <div class="portfolio-overlay">
-                <div class="portfolio-overlay-text"></div>
-                <a href="https://archit-photogallery.netlify.app/" target="_blank">View Portfolio</a>
-            </div>
-        </div>
-        <div class="portfolio-item">
-            <img src="images/abs5.jpeg" alt="Portfolio">
-            <div class="portfolio-overlay">
-                <div class="portfolio-overlay-text"></div>
-                <a href="https://archit-mohan-shukla-portfolio.netlify.app/" target="_blank">View Portfolio</a>
-            </div>
-        </div>
-        <div class="portfolio-item">
-            <img src="images/abs8.jpeg" alt="Portfolio">
-            <div class="portfolio-overlay">
-                <div class="portfolio-overlay-text"></div>
-                <a href="https://archit-photogallery.netlify.app/" target="_blank">View Portfolio</a>
-            </div>
-        </div>
-        <!-- Add more portfolio items as needed -->
-    </div>
-    </section>
-</section>
-
-
-
-    <!-- More -->
-<section id="more" class="section">  
-    <h2>Accomplishments & More </h2> 
-    <!-- Accomplishments Section -->
-<section id="accomplishments" class="section fade-in">
-    <h2>Accomplishments</h2>
-  
-    <!-- Certificate Cards -->
-    <div class="certificate-cards">
-      <!-- Academic Certificate -->
-      <div class="certificate-card">
-        <img src="images/AcademicCertifiate.webp" alt="Academic Certificate">
-        <h3>Academic Excellence</h3>
-        <p>Received for outstanding academic performance.</p>
-        <a href="https://drive.google.com/drive/folders/1--vePxerNimo7M93XGw9kawdEplqPIWZ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
-      </div>
-  
-      <!-- Co-Curricular Certificate -->
-      <div class="certificate-card">
-        <img src="images/Co-curricular certificate.jpg" alt="Co-Curricular Certificate">
-        <h3>Co-Curricular Achievements</h3>
-        <p>Awarded for significant contributions to extracurricular activities.</p>
-        <a href="https://drive.google.com/drive/folders/1vOXL3YzQm15g-Yp7Krbpg1It4kExAtNQ?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
-      </div>
-  
-      <!-- Coursera Certificate -->
-      <div class="certificate-card">
-        <img src="images/coursera-course-certificate.webp" alt="Coursera Certificate">
-        <h3>Digital Course Completion</h3>
-        <p>Completed online courses on Digital Platforms</p>
-        <a href="https://drive.google.com/drive/folders/1IniLB3Bkx9L5a0_-tPSp9vhHhkPehPCs?usp=sharing" target="_blank" class="view-certificate">View Certificates</a>
-      </div>
-    </div>
-  </section> 
- <!-- Books Section -->
-<section id="books">
-    <h2>Books</h2>
-    <div class="books-container">
-        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Biology-of-Belief-2f4cf8018d1c45ca9f4f0307f571b72b?pvs=4';">
-            <img src="images/Biology of Belief.png" alt="Biology of Belief">
-            <h3>Biology Of Belief</h3>
-            <a href="https://www.notion.so/architshukla/Biology-of-Belief-2f4cf8018d1c45ca9f4f0307f571b72b?pvs=4" target="_blank">See Summary</a>
-            <div class="book-overlay">
-                <h3>Biology Of Belief</h3>
-            </div>
-        </div>
-        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Think-Like-a-Monk-83009350b402421eba9bb744ba7435cd?pvs=4';">
-            <img src="images/Think Like a Monk.jpg" alt="Think Like a Monk">
-            <h3>Think Like a Monk</h3>
-            <a href="https://www.notion.so/architshukla/Think-Like-a-Monk-83009350b402421eba9bb744ba7435cd?pvs=4" target="_blank">See Summary</a>
-            <div class="book-overlay">
-                <h3>Think Like a Monk</h3>
-            </div>
-        </div>
-        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4';">
-            <img src="images/The Mindset.jpeg" alt="The Mindset">
-            <h3>The Mindset</h3>
-            <a href="https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4" target="_blank">See Summary</a>
-            <div class="book-overlay">
-                <h3>The Mindset</h3>
-            </div>
-        </div>
-        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/Power-of-the-Subconscious-mind-79ebb8c89dbd442e8db1b43278c5f4b3?pvs=4';">
-            <img src="images/The Power of your subconscious Mind.jpg" alt="The Power of your subconscious Mind">
-            <h3>The Power of your subconscious Mind</h3>
-            <a href="https://www.notion.so/architshukla/Power-of-the-Subconscious-mind-79ebb8c89dbd442e8db1b43278c5f4b3?pvs=4" target="_blank">See Summary</a>
-            <div class="book-overlay">
-                <h3>The Power of your subconscious Mind</h3>
-            </div>
-        </div>
-        <div class="book-item" onclick="window.location.href='https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4';">
-            <img src="images/Life Without Limits.jpg" alt="Life Without Limits">
-            <h3>Life Without Limits</h3>
-            <a href="https://www.notion.so/architshukla/The-Mindset-eddc050795304848be480b9ac6e6d8e3?pvs=4" target="_blank">See Summary</a>
-            <div class="book-overlay">
-                <h3>Life Without Limits</h3>
-            </div>
-        </div>
-        <!-- Add more book items as needed -->
-    </div>
-</section>
-
-</div>
-</section>
     <!-- Footer Section -->
     <footer id="myFooter">
         <div class="footer-container">
             <div class="left-section">
-                <p>By Archit with <span class="heart">&#10084;</span></p>
+                <p>Designed and Built by Archit with <span class="heart">❤️</span></p>
             </div>
             <div class="right-section">
-                <a href="mailto:archit47a@gmail.com">Mail Me</a>
-                <a href="https://wa.me/919990951644/?text=Hi Archit, What's up" target="_blank">WhatsApp</a>
+                <a href="mailto:archit47a@gmail.com">Email Me</a>
+                <a href="https://wa.me/919990951644/?text=Hi%20Archit,%20what's%20up!" target="_blank">WhatsApp</a>
                 <a href="https://www.linkedin.com/in/archit-mohan-shukla-0b2b15209/" target="_blank">LinkedIn</a>
-                <div class="scroll-to-top" onclick="scrollToTop()">⬆️</div>
             </div>
         </div>
     </footer>
 
+    <!-- Interactive Book Summary Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeBookModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-book-title">Book Title</h2>
+            <h5 id="modalAuthor" class="modal-book-author">Author</h5>
+            <div id="modalSummary" class="modal-book-summary">Summary text goes here...</div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" onclick="scrollToTop()">▲</div>
+
+    <!-- Slide-Out Details Drawer Hub -->
+    <div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDetailsDrawer()"></div>
+    <div class="details-drawer" id="details-drawer">
+        <div class="drawer-close" onclick="closeDetailsDrawer()">&times;</div>
+        <div class="drawer-banner">
+            <img id="drawer-img" src="" alt="">
+            <div class="drawer-banner-overlay"></div>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-heading-group">
+                <h5 id="drawer-badge"></h5>
+                <h3 id="drawer-title"></h3>
+            </div>
+            <div class="drawer-meta-tags" id="drawer-tags"></div>
+            <div class="drawer-institution" id="drawer-inst"></div>
+            <div class="drawer-detail-text" id="drawer-desc"></div>
+        </div>
+        <div class="drawer-footer">
+            <a id="drawer-link" href="#" target="_blank" class="drawer-cta-btn">Learn More</a>
+        </div>
+    </div>
+
+    <!-- Core Interactive Logic Script -->
     <script src="script.js"></script>
 </body>
 
