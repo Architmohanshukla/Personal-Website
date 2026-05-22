@@ -246,6 +246,9 @@ function toggleTheme() {
     if (window.updateCanvasColors) {
         window.updateCanvasColors(isLightTheme);
     }
+    if (window.updateNetworkColors) {
+        window.updateNetworkColors(isLightTheme);
+    }
 }
 
 // --- Scrolling Utilities ---
@@ -619,6 +622,639 @@ function initCanvas() {
     animate();
 }
 
+// --- Category Color Helper for Network Topology ---
+function getCategoryColor(category, isLightTheme, alpha = 1) {
+    let h, s, l;
+    switch (category) {
+        case "core": h = 190; s = 85; l = isLightTheme ? 40 : 50; break; // Cyan
+        case "lab": h = 330; s = 80; l = isLightTheme ? 45 : 55; break; // Magenta/Pink
+        case "computational": h = 260; s = 85; l = isLightTheme ? 50 : 60; break; // Purple/Indigo
+        case "regulatory": h = 40; s = 90; l = isLightTheme ? 40 : 50; break; // Amber/Gold
+        case "thesis": h = 15; s = 85; l = isLightTheme ? 45 : 55; break; // Coral
+        case "tools": h = 155; s = 75; l = isLightTheme ? 35 : 45; break; // Emerald
+        default: h = 200; s = 70; l = isLightTheme ? 40 : 50;
+    }
+    return `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
+}
+
+// --- Interactive Force-Directed Network Graph Class ---
+class NetworkTopologyGraph {
+    constructor(canvasId, containerId) {
+        this.canvas = document.getElementById(canvasId);
+        this.container = document.getElementById(containerId);
+        if (!this.canvas || !this.container) return;
+        this.ctx = this.canvas.getContext('2d');
+        
+        this.nodes = [];
+        this.links = [];
+        this.draggedNode = null;
+        this.hoveredNode = null;
+        this.isLoopRunning = false;
+        this.mouse = { x: null, y: null, isDown: false };
+        
+        // Settings
+        this.isLightTheme = document.body.classList.contains('light-theme');
+        
+        // Physics constants
+        this.damping = 0.84;
+        
+        this.initNodesAndLinks();
+        this.setupEvents();
+        this.resize();
+        this.setupIntersectionObserver();
+    }
+    
+    initNodesAndLinks() {
+        const hubDefs = [
+            { id: "core", label: "Core BME" },
+            { id: "lab", label: "Research & Lab" },
+            { id: "computational", label: "Computational" },
+            { id: "regulatory", label: "Device & Regulatory" },
+            { id: "thesis", label: "Thesis Domain" },
+            { id: "tools", label: "Tools & Software" }
+        ];
+        
+        const hubMap = {};
+        hubDefs.forEach((def, index) => {
+            const angle = (index * 2 * Math.PI) / hubDefs.length;
+            const node = {
+                id: def.id,
+                name: def.label,
+                category: def.id,
+                isHub: true,
+                radius: 16,
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                angle: angle,
+                visible: true,
+                opacity: 1
+            };
+            this.nodes.push(node);
+            hubMap[def.id] = node;
+        });
+        
+        keywordsData.forEach((kw) => {
+            const hub = hubMap[kw.category];
+            if (!hub) return;
+            
+            const node = {
+                name: kw.name,
+                category: kw.category,
+                isHub: false,
+                radius: 5,
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                desc: kw.desc,
+                subcat: kw.subcat || null,
+                parentHub: hub,
+                visible: true,
+                opacity: 1
+            };
+            this.nodes.push(node);
+            
+            this.links.push({
+                source: hub,
+                target: node,
+                length: 65,
+                isHubLink: false
+            });
+        });
+        
+        // Connect hubs in a ring to structure the network center
+        const hubsList = this.nodes.filter(n => n.isHub);
+        for (let i = 0; i < hubsList.length; i++) {
+            const n1 = hubsList[i];
+            const n2 = hubsList[(i + 1) % hubsList.length];
+            this.links.push({
+                source: n1,
+                target: n2,
+                length: 150,
+                isHubLink: true
+            });
+        }
+    }
+    
+    resize() {
+        const rect = this.container.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
+        
+        this.ctx.resetTransform();
+        this.ctx.scale(dpr, dpr);
+        
+        this.width = rect.width;
+        this.height = rect.height;
+        this.cx = this.width / 2;
+        this.cy = this.height / 2;
+        
+        const isMobile = this.width < 768;
+        
+        // Adjust radii dynamically for mobile layouts
+        this.nodes.forEach(node => {
+            if (node.isHub) {
+                node.radius = isMobile ? 12 : 16;
+            } else {
+                node.radius = isMobile ? 4 : 5;
+            }
+        });
+        
+        // Initial positioning around circular centers
+        this.nodes.forEach(node => {
+            if (node.isHub) {
+                const dist = isMobile ? 95 : 135;
+                const targetX = this.cx + Math.cos(node.angle) * dist;
+                const targetY = this.cy + Math.sin(node.angle) * dist;
+                
+                if (node.x === 0 && node.y === 0) {
+                    node.x = targetX;
+                    node.y = targetY;
+                    
+                    // Explode keyword nodes slightly around their hub
+                    this.nodes.forEach(child => {
+                        if (!child.isHub && child.parentHub === node) {
+                            const childAngle = Math.random() * 2 * Math.PI;
+                            const childDist = 30 + Math.random() * 30;
+                            child.x = node.x + Math.cos(childAngle) * childDist;
+                            child.y = node.y + Math.sin(childAngle) * childDist;
+                        }
+                    });
+                }
+            }
+        });
+    }
+    
+    burst() {
+        this.nodes.forEach(node => {
+            const dx = node.x - this.cx;
+            const dy = node.y - this.cy;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            node.vx += (dx / dist) * (node.isHub ? 3 : 7) * (Math.random() * 0.4 + 0.6);
+            node.vy += (dy / dist) * (node.isHub ? 3 : 7) * (Math.random() * 0.4 + 0.6);
+        });
+    }
+    
+    updateFilter(filter, searchQuery) {
+        // 1. Determine visibility of keyword nodes
+        this.nodes.forEach(node => {
+            if (!node.isHub) {
+                const matchesCategory = (filter === "all" || node.category === filter);
+                const matchesSearch = searchQuery === "" || 
+                    node.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    node.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (node.subcat && node.subcat.toLowerCase().includes(searchQuery.toLowerCase()));
+                node.visible = matchesCategory && matchesSearch;
+            }
+        });
+        
+        // 2. Determine visibility of hubs based on whether they contain visible children
+        this.nodes.forEach(node => {
+            if (node.isHub) {
+                const hasVisibleChildren = this.nodes.some(child => !child.isHub && child.parentHub === node && child.visible);
+                const matchesCategory = (filter === "all" || node.category === filter);
+                node.visible = matchesCategory && (hasVisibleChildren || filter === node.category || (filter === "all" && searchQuery === ""));
+            }
+        });
+    }
+    
+    showCategoryDetails(category) {
+        const placeholder = document.getElementById('details-placeholder');
+        const content = document.getElementById('details-content');
+        const titleEl = document.getElementById('details-title');
+        const catEl = document.getElementById('details-category');
+        const descEl = document.getElementById('details-desc');
+        
+        if (!placeholder || !content || !titleEl || !catEl || !descEl) return;
+        
+        let catName = "";
+        let catDesc = "";
+        switch(category) {
+            case "core": 
+                catName = "Core Biomedical Engineering"; 
+                catDesc = "Core principles bridging mechanical, electrical, biological, and medical design to create advanced healthcare innovations.";
+                break;
+            case "lab": 
+                catName = "Research & Lab Competency"; 
+                catDesc = "Experimental protocols, sterile cell cultures, wet lab workflows, statistical analysis, and high-fidelity regulatory verification practices.";
+                break;
+            case "computational": 
+                catName = "Computational & Quantitative"; 
+                catDesc = "Healthcare analytics, deep learning models, custom scripting in Python/MATLAB, and computer vision systems for physiological modeling.";
+                break;
+            case "regulatory": 
+                catName = "Medical Device & Regulatory"; 
+                catDesc = "End-to-end device development standards, design controls, risk management (ISO 14971), and FDA/CE compliance pathways.";
+                break;
+            case "thesis": 
+                catName = "Thesis & Special Domain"; 
+                catDesc = "Conductive materials, flexible polymer coatings, plantar pressure analysis, gait kinetics, and biomechanical modeling.";
+                break;
+            case "tools": 
+                catName = "Tools & Software"; 
+                catDesc = "Engineering design (SolidWorks, AutoCAD), simulations (ANSYS FEA), data analysis (Prism, Origin, SPSS), and literature research tools.";
+                break;
+            default: 
+                catName = "Biomedical Expertise";
+                catDesc = "Scientific capability architecture and translational research.";
+        }
+        
+        catEl.textContent = "Expertise Hub";
+        titleEl.textContent = catName;
+        descEl.textContent = catDesc;
+        
+        placeholder.style.display = 'none';
+        content.style.display = 'block';
+    }
+    
+    setupEvents() {
+        this.canvas.addEventListener('mousemove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            this.mouse.x = mouseX;
+            this.mouse.y = mouseY;
+            
+            if (this.mouse.isDown && this.draggedNode) {
+                return;
+            }
+            
+            let foundNode = null;
+            // Scan for hovered nodes (hubs prioritized over keywords)
+            for (let i = 0; i < this.nodes.length; i++) {
+                const node = this.nodes[i];
+                if (!node.visible) continue;
+                
+                const dx = node.x - mouseX;
+                const dy = node.y - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const hitRadius = node.radius + (node.isHub ? 12 : 8);
+                
+                if (dist < hitRadius) {
+                    foundNode = node;
+                    break;
+                }
+            }
+            
+            if (foundNode !== this.hoveredNode) {
+                this.hoveredNode = foundNode;
+                
+                if (foundNode) {
+                    if (!foundNode.isHub) {
+                        showKeywordDetails(foundNode);
+                    } else {
+                        this.showCategoryDetails(foundNode.category);
+                    }
+                } else {
+                    clearKeywordDetails();
+                }
+            }
+        });
+        
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.mouse.isDown = true;
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Find which node is clicked
+            for (let i = 0; i < this.nodes.length; i++) {
+                const node = this.nodes[i];
+                if (!node.visible) continue;
+                
+                const dx = node.x - mouseX;
+                const dy = node.y - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < node.radius + 10) {
+                    this.draggedNode = node;
+                    break;
+                }
+            }
+        });
+        
+        window.addEventListener('mouseup', () => {
+            this.mouse.isDown = false;
+            this.draggedNode = null;
+        });
+        
+        this.canvas.addEventListener('mouseleave', () => {
+            this.mouse.x = null;
+            this.mouse.y = null;
+            this.hoveredNode = null;
+            clearKeywordDetails();
+        });
+        
+        window.addEventListener('resize', () => {
+            this.resize();
+        });
+    }
+    
+    setupIntersectionObserver() {
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeViewBtn = document.querySelector('.view-btn.active');
+                        const isNetworkActive = activeViewBtn && activeViewBtn.getAttribute('data-view') === 'network';
+                        if (isNetworkActive) {
+                            this.startLoop();
+                        }
+                    } else {
+                        this.stopLoop();
+                    }
+                });
+            }, { threshold: 0.05 });
+            
+            observer.observe(this.container);
+        }
+    }
+    
+    updatePhysics() {
+        const isMobile = this.width < 768;
+        const gravityStrength = isMobile ? 0.001 : 0.002;
+        const springK = isMobile ? 0.015 : 0.025;
+        
+        if (this.draggedNode) {
+            this.draggedNode.x = this.mouse.x;
+            this.draggedNode.y = this.mouse.y;
+            this.draggedNode.vx = 0;
+            this.draggedNode.vy = 0;
+        }
+        
+        // Gravity attraction to canvas center
+        this.nodes.forEach(node => {
+            if (!node.visible) return;
+            const dx = this.cx - node.x;
+            const dy = this.cy - node.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > 0) {
+                const strength = node.isHub ? gravityStrength * 2.8 : gravityStrength;
+                node.vx += (dx / dist) * dist * strength;
+                node.vy += (dy / dist) * dist * strength;
+            }
+        });
+        
+        // Link springs pulling nodes together
+        this.links.forEach(link => {
+            const A = link.source;
+            const B = link.target;
+            if (!A.visible || !B.visible) return;
+            
+            const dx = B.x - A.x;
+            const dy = B.y - A.y;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 0.1;
+            
+            let desiredLen = link.length;
+            if (isMobile) desiredLen *= 0.8;
+            
+            const force = (dist - desiredLen) * springK;
+            const fx = (dx / dist) * force;
+            const fy = (dy / dist) * force;
+            
+            A.vx += fx;
+            A.vy += fy;
+            B.vx -= fx;
+            B.vy -= fy;
+        });
+        
+        // Node-to-node repulsion forces
+        for (let i = 0; i < this.nodes.length; i++) {
+            const n1 = this.nodes[i];
+            if (!n1.visible) continue;
+            
+            for (let j = i + 1; j < this.nodes.length; j++) {
+                const n2 = this.nodes[j];
+                if (!n2.visible) continue;
+                
+                const dx = n2.x - n1.x;
+                const dy = n2.y - n1.y;
+                const dist = Math.sqrt(dx * dx + dy * dy) || 0.1;
+                
+                let minDist = n1.radius + n2.radius + (n1.isHub || n2.isHub ? (isMobile ? 32 : 48) : (isMobile ? 12 : 22));
+                
+                if (dist < minDist) {
+                    const force = (minDist - dist) * 0.08;
+                    n1.vx -= (dx / dist) * force;
+                    n1.vy -= (dy / dist) * force;
+                    n2.vx += (dx / dist) * force;
+                    n2.vy += (dy / dist) * force;
+                } else {
+                    const force = (n1.isHub || n2.isHub ? 55 : 25) / (dist * dist);
+                    n1.vx -= (dx / dist) * Math.min(force, 0.45);
+                    n1.vy -= (dy / dist) * Math.min(force, 0.45);
+                    n2.vx += (dx / dist) * Math.min(force, 0.45);
+                    n2.vy += (dy / dist) * Math.min(force, 0.45);
+                }
+            }
+        }
+        
+        // Integration step & constraints
+        const pad = 12;
+        this.nodes.forEach(node => {
+            if (!node.visible) return;
+            if (node === this.draggedNode) return;
+            
+            node.x += node.vx;
+            node.y += node.vy;
+            
+            node.vx *= this.damping;
+            node.vy *= this.damping;
+            
+            const nodePad = node.radius + pad;
+            if (node.x < nodePad) { node.x = nodePad; node.vx = 0; }
+            if (node.x > this.width - nodePad) { node.x = this.width - nodePad; node.vx = 0; }
+            if (node.y < nodePad) { node.y = nodePad; node.vy = 0; }
+            if (node.y > this.height - nodePad) { node.y = this.height - nodePad; node.vy = 0; }
+        });
+    }
+    
+    draw() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        // 1. Draw Links
+        this.links.forEach(link => {
+            const A = link.source;
+            const B = link.target;
+            if (!A.visible || !B.visible) return;
+            
+            let baseAlpha = link.isHubLink ? 0.08 : 0.12;
+            if (this.isLightTheme) {
+                baseAlpha = link.isHubLink ? 0.12 : 0.18;
+            }
+            
+            let alpha = baseAlpha;
+            
+            if (this.hoveredNode) {
+                const isConnected = (A === this.hoveredNode || B === this.hoveredNode);
+                alpha = isConnected ? 0.65 : 0.02;
+            }
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(A.x, A.y);
+            this.ctx.lineTo(B.x, B.y);
+            
+            const category = A.isHub ? A.category : B.category;
+            this.ctx.strokeStyle = getCategoryColor(category, this.isLightTheme, alpha);
+            this.ctx.lineWidth = link.isHubLink ? 1.5 : 1;
+            this.ctx.stroke();
+        });
+        
+        // 2. Draw Keyword Nodes
+        this.nodes.forEach(node => {
+            if (!node.visible) return;
+            if (node.isHub) return;
+            
+            const isHovered = (node === this.hoveredNode);
+            let alpha = 0.85;
+            let scale = 1.0;
+            
+            if (this.hoveredNode) {
+                const isDirectRelation = (this.hoveredNode.isHub && node.parentHub === this.hoveredNode) || 
+                                         (!this.hoveredNode.isHub && node.parentHub === this.hoveredNode.parentHub) ||
+                                         isHovered;
+                if (isHovered) {
+                    alpha = 1.0;
+                    scale = 1.6;
+                } else if (isDirectRelation) {
+                    alpha = 0.9;
+                    scale = 1.25;
+                } else {
+                    alpha = 0.2;
+                }
+            }
+            
+            const color = getCategoryColor(node.category, this.isLightTheme, alpha);
+            
+            // Hover background halo glow
+            if (isHovered) {
+                this.ctx.beginPath();
+                this.ctx.arc(node.x, node.y, node.radius * scale * 2.5, 0, Math.PI * 2);
+                this.ctx.fillStyle = getCategoryColor(node.category, this.isLightTheme, alpha * 0.2);
+                this.ctx.fill();
+            }
+            
+            // Core node dot
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, node.radius * scale, 0, Math.PI * 2);
+            this.ctx.fillStyle = color;
+            this.ctx.shadowColor = isHovered ? color : "transparent";
+            this.ctx.shadowBlur = isHovered ? 12 : 0;
+            this.ctx.fill();
+            this.ctx.shadowBlur = 0; // reset
+            
+            // Hover tooltip label
+            if (isHovered) {
+                this.ctx.font = "500 12px 'Outfit', 'Inter', sans-serif";
+                
+                const textWidth = this.ctx.measureText(node.name).width;
+                this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.95)" : "rgba(15, 23, 42, 0.88)";
+                this.ctx.strokeStyle = getCategoryColor(node.category, this.isLightTheme, 0.4);
+                this.ctx.lineWidth = 1;
+                
+                this.ctx.beginPath();
+                this.ctx.roundRect(node.x + 10, node.y - 10, textWidth + 12, 20, 5);
+                this.ctx.fill();
+                this.ctx.stroke();
+                
+                this.ctx.fillStyle = this.isLightTheme ? "#0f172a" : "#f1f5f9";
+                this.ctx.textAlign = "left";
+                this.ctx.textBaseline = "middle";
+                this.ctx.fillText(node.name, node.x + 16, node.y);
+            }
+        });
+        
+        // 3. Draw Category Hubs
+        this.nodes.forEach(node => {
+            if (!node.visible) return;
+            if (!node.isHub) return;
+            
+            const isHovered = (node === this.hoveredNode);
+            const isChildHovered = (this.hoveredNode && !this.hoveredNode.isHub && this.hoveredNode.parentHub === node);
+            const isActive = isHovered || isChildHovered;
+            
+            let alpha = 0.9;
+            let scale = 1.0;
+            
+            if (this.hoveredNode) {
+                if (isActive) {
+                    alpha = 1.0;
+                    scale = 1.15;
+                } else {
+                    alpha = 0.25;
+                }
+            }
+            
+            const baseColor = getCategoryColor(node.category, this.isLightTheme, alpha);
+            
+            // Breathe pulsing halo ring
+            const pulseRate = 0.003;
+            const glowRadius = node.radius * scale * (1.55 + Math.sin(Date.now() * pulseRate) * 0.1);
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2);
+            this.ctx.fillStyle = getCategoryColor(node.category, this.isLightTheme, alpha * (isActive ? 0.18 : 0.05));
+            this.ctx.fill();
+            
+            // Outermost boundary ring
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, node.radius * scale, 0, Math.PI * 2);
+            this.ctx.strokeStyle = baseColor;
+            this.ctx.lineWidth = isActive ? 3 : 2;
+            this.ctx.stroke();
+            
+            // Glassy hub backdrop
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, node.radius * scale - (isActive ? 4 : 3), 0, Math.PI * 2);
+            this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.95)" : "rgba(15, 23, 42, 0.92)";
+            this.ctx.fill();
+            
+            // Core central node indicator
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
+            this.ctx.fillStyle = baseColor;
+            this.ctx.fill();
+            
+            // Draw Text labels
+            const labelY = node.y - node.radius * scale - 12;
+            this.ctx.font = isActive ? "bold 13px 'Outfit', sans-serif" : "600 12px 'Outfit', sans-serif";
+            
+            if (isActive) {
+                const textWidth = this.ctx.measureText(node.name).width;
+                this.ctx.fillStyle = this.isLightTheme ? "rgba(255, 255, 255, 0.9)" : "rgba(15, 23, 42, 0.85)";
+                this.ctx.beginPath();
+                this.ctx.roundRect(node.x - textWidth/2 - 6, labelY - 9, textWidth + 12, 18, 9);
+                this.ctx.fill();
+            }
+            
+            this.ctx.fillStyle = this.isLightTheme ? (isActive ? "#0f172a" : "#475569") : (isActive ? "#f8fafc" : "#94a3b8");
+            this.ctx.textAlign = "center";
+            this.ctx.textBaseline = "middle";
+            this.ctx.fillText(node.name, node.x, labelY);
+        });
+    }
+    
+    startLoop() {
+        if (this.isLoopRunning) return;
+        this.isLoopRunning = true;
+        this.burst();
+        
+        const tick = () => {
+            if (!this.isLoopRunning) return;
+            this.updatePhysics();
+            this.draw();
+            requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    }
+    
+    stopLoop() {
+        this.isLoopRunning = false;
+    }
+}
+
 // --- Optimized Biomedical Resume Keyword Architecture Data ---
 const keywordsData = [
     // 1. Core Biomedical Engineering Keywords
@@ -899,6 +1535,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilter = "all";
     let activeSearch = "";
     
+    // Graph instance reference
+    let graphInstance = null;
+    
+    // --- Dual-View Toggle Binding ---
+    const viewButtons = document.querySelectorAll('.view-btn');
+    const gridContainer = document.getElementById('keywords-container');
+    const canvasContainer = document.getElementById('network-canvas-container');
+    
+    viewButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            viewButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const selectedView = btn.getAttribute('data-view');
+            if (selectedView === 'grid') {
+                if (gridContainer) gridContainer.style.display = 'flex';
+                if (canvasContainer) canvasContainer.style.display = 'none';
+                if (graphInstance) graphInstance.stopLoop();
+            } else if (selectedView === 'network') {
+                if (gridContainer) gridContainer.style.display = 'none';
+                if (canvasContainer) canvasContainer.style.display = 'block';
+                
+                // Initialize graph on first switch
+                if (!graphInstance) {
+                    graphInstance = new NetworkTopologyGraph('network-canvas', 'network-canvas-container');
+                    // Expose to window so theme toggle can call updateNetworkColors
+                    window.updateNetworkColors = (isLightTheme) => {
+                        if (graphInstance) {
+                            graphInstance.isLightTheme = isLightTheme;
+                        }
+                    };
+                }
+                
+                if (graphInstance) {
+                    graphInstance.resize(); // Recalculate dimensions
+                    graphInstance.updateFilter(activeFilter, activeSearch);
+                    graphInstance.startLoop();
+                }
+            }
+        });
+    });
+    
     if (keywordSearchInput) {
         keywordSearchInput.addEventListener('input', (e) => {
             activeSearch = e.target.value.trim();
@@ -906,6 +1584,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearSearchBtn.style.display = activeSearch.length > 0 ? 'block' : 'none';
             }
             renderKeywords(activeFilter, activeSearch);
+            if (graphInstance) {
+                graphInstance.updateFilter(activeFilter, activeSearch);
+            }
         });
     }
     
@@ -916,6 +1597,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeSearch = "";
                 clearSearchBtn.style.display = 'none';
                 renderKeywords(activeFilter, activeSearch);
+                if (graphInstance) {
+                    graphInstance.updateFilter(activeFilter, activeSearch);
+                }
                 keywordSearchInput.focus();
             }
         });
@@ -927,6 +1611,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.classList.add('active');
             activeFilter = tab.getAttribute('data-filter');
             renderKeywords(activeFilter, activeSearch);
+            if (graphInstance) {
+                graphInstance.updateFilter(activeFilter, activeSearch);
+            }
         });
     });
     

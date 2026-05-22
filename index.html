@@ -25,7 +25,7 @@
             <div class="nav-links">
                 <a href="#home" class="active">Home</a>
                 <a href="#about-me">About Me</a>
-                <a href="#skills">Skills</a>
+                <a href="#skills">Expertise</a>
                 <a href="#research">Research</a>
                 <a href="#portfolio">Portfolio</a>
                 <a href="#more">More</a>
@@ -182,7 +182,7 @@
 
         <!-- Skills Section -->
         <section id="skills" class="section fade-in">
-            <h2>Skills</h2>
+            <h2>Expertise Topology & Technical Architecture</h2>
             <div class="content">
                 <!-- Technical & Bio-Engineering Skills -->
                 <div class="skill glass-panel" id="technical-skill">
@@ -242,7 +242,13 @@
             <!-- Premium Keyword Architecture & Technical Stack Explorer -->
             <div class="skills-explorer-wrapper glass-panel">
                 <div class="explorer-header">
-                    <h3>Keyword Architecture & Technical Stack Explorer</h3>
+                    <div class="explorer-title-row">
+                        <h3>Keyword Architecture & Technical Stack Explorer</h3>
+                        <div class="explorer-view-toggle">
+                            <button class="view-btn active" data-view="grid">Badge Grid</button>
+                            <button class="view-btn" data-view="network">Connected Topology</button>
+                        </div>
+                    </div>
                     <p>Filter or search through core competencies, laboratory techniques, computational skills, and specialized biomedical engineering keywords defining my research profile.</p>
                     
                     <div class="explorer-controls">
@@ -267,6 +273,9 @@
                 <div class="explorer-body">
                     <div class="keywords-container" id="keywords-container">
                         <!-- Dynamic keyword tags are injected here by script.js -->
+                    </div>
+                    <div class="network-canvas-container" id="network-canvas-container" style="display: none;">
+                        <canvas id="network-canvas"></canvas>
                     </div>
                 </div>
 

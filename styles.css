@@ -1766,6 +1766,78 @@ footer {
     margin-bottom: 10px;
 }
 
+.explorer-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 0.8rem;
+}
+
+.explorer-view-toggle {
+    display: flex;
+    gap: 6px;
+    background: rgba(var(--bg-secondary-rgb), 0.4);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    border-radius: 30px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.view-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.view-btn:hover {
+    color: var(--text-primary);
+}
+
+.view-btn.active {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    box-shadow: 0 4px 12px -3px var(--accent-color);
+}
+
+.network-canvas-container {
+    width: 100%;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+body.light-theme .network-canvas-container {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.03);
+}
+
+#network-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+#network-canvas:active {
+    cursor: grabbing;
+}
+
 /* Responsive adjustments for explorer styles */
 @media (max-width: 768px) {
     .skills-explorer-wrapper {
@@ -1773,6 +1845,24 @@ footer {
     }
     .explorer-header h3 {
         font-size: 1.4rem;
+    }
+    .explorer-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .explorer-view-toggle {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .view-btn {
+        flex: 1;
+        text-align: center;
+        padding: 6px 8px;
+        font-size: 0.78rem;
+    }
+    .network-canvas-container {
+        height: 380px;
     }
     .bio-header {
         flex-direction: column;
