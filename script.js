@@ -619,8 +619,320 @@ function initCanvas() {
     animate();
 }
 
+// --- Optimized Biomedical Resume Keyword Architecture Data ---
+const keywordsData = [
+    // 1. Core Biomedical Engineering Keywords
+    { name: "Biomaterials", category: "core", desc: "Materials designed to interface with biological systems to evaluate, treat, augment or replace any tissue, organ or function of the body." },
+    { name: "Tissue Engineering", category: "core", desc: "Using cells, engineering materials, and biochemical factors to restore, maintain, or improve biological tissue functions." },
+    { name: "Regenerative Medicine", category: "core", desc: "Advancing methods to regrow, repair or replace damaged or diseased cells, organs or tissues using biomaterials and cellular therapies." },
+    { name: "Biomedical Engineering", category: "core", desc: "Applying engineering principles, design concepts, and analytical methods to medicine and biology for healthcare optimization." },
+    { name: "Translational Research", category: "core", desc: "Translating fundamental laboratory discoveries into functional, clinically validated treatments and diagnostic systems." },
+    { name: "Cell–Material Interaction", category: "core", desc: "Studying how physical, chemical, and topographical cues of biomaterial surfaces influence cell adhesion, growth, and differentiation." },
+    { name: "Biocompatibility", category: "core", desc: "The capability of a prosthesis, implant, or device to perform with an appropriate host response in a specific application." },
+    { name: "Biomedical Innovation", category: "core", desc: "Conceptualizing, designing, and fabricating state-of-the-art diagnostic, surgical, therapeutic, or assistive medical instruments." },
+    { name: "Mechanobiology", category: "core", desc: "Investigating how physical forces and changes in the mechanical properties of cells and tissues contribute to physiology and disease." },
+    { name: "Bioelectronics", category: "core", desc: "The interface of electronics and electrical engineering principles with biological systems for biosensing, pacemakers, and neural prosthetics." },
+    { name: "Biomaterial Characterization", category: "core", desc: "Analyzing structural, thermal, chemical, and mechanical properties of biomaterials (such as FTIR, SEM, and tensile testing)." },
+    { name: "Conductive Biomaterials", category: "core", desc: "Smart electroactive substrates (e.g. polymers, carbon blends) designed to stimulate cells and transmit bioelectrical signals." },
+    { name: "Surface Modification", category: "core", desc: "Engineering biomaterial surfaces via chemical, physical or plasma treatments to control biological interface properties without affecting bulk features." },
+    { name: "Biomedical Prototyping", category: "core", desc: "Translating healthcare device specifications into initial physical iterations using additive manufacturing and benchtop testing." },
+    { name: "Human Physiology", category: "core", desc: "The science of the mechanical, physical, and biochemical functions of humans, serving as the biological baseline for all medical devices." },
+    { name: "Biotechnology Research", category: "core", desc: "Utilizing biological systems, living organisms, or derivatives thereof, to develop or make products for specific medical uses." },
+
+    // 2. Research & Laboratory Competency Keywords
+    { name: "Experimental Design", category: "lab", desc: "Structuring scientific experiments systematically to isolate independent variables, evaluate controls, and ensure statistical power." },
+    { name: "Wet Lab Techniques", category: "lab", desc: "Standard chemical and biological laboratory protocols, chemical handling, pipetting, solution preparation, and sterile techniques." },
+    { name: "Cell Culture", category: "lab", desc: "In vitro maintenance, growth, propagation, and characterization of primary cells or established cell lines in controlled environments." },
+    { name: "Scientific Literature Review", category: "lab", desc: "Systematically gathering, evaluating, and synthesizing academic databases (PubMed, Scholar) to build technical baselines." },
+    { name: "Research Methodology", category: "lab", desc: "Defining scientific workflows, experimental parameter bounds, computational controls, and verification criteria." },
+    { name: "Assay Development", category: "lab", desc: "Formulating analytical procedures to measure the presence, amount, or functional activity of a target analyte or biological response." },
+    { name: "SOP Compliance", category: "lab", desc: "Adhering strictly to Standard Operating Procedures in laboratory and manufacturing settings to guarantee safety and compliance." },
+    { name: "Data Interpretation", category: "lab", desc: "Deriving meaningful biological and engineering insights from raw experimental graphs, chromatograms, and telemetry logs." },
+    { name: "Statistical Analysis", category: "lab", desc: "Applying mathematical techniques to interpret scientific datasets, including hypothesis testing, ANOVA, t-tests, and correlation." },
+    { name: "Scientific Writing", category: "lab", desc: "Drafting technical abstracts, research proposals, peer-reviewed journal manuscripts, and regulatory submissions." },
+    { name: "Laboratory Documentation", category: "lab", desc: "Recording experiments, reagents, sensor calibrations, and test results in official logs for quality control and IP filing." },
+    { name: "Reproducibility Practices", category: "lab", desc: "Implementing rigorous testing standards, control validation, and clear protocols to guarantee results can be verified independently." },
+    { name: "Hypothesis Development", category: "lab", desc: "Establishing testable, logically sound assertions concerning biological or mechanical relationships to guide research focus." },
+    { name: "Validation Studies", category: "lab", desc: "Proving that a diagnostic process, material, or system consistently fulfills its clinical purpose and meets end-user requirements." },
+    { name: "Prototype Testing", category: "lab", desc: "Conducting benchtop mechanical, electrical, or chemical evaluations of functional models to verify target performance metrics." },
+    { name: "Design Verification", category: "lab", desc: "Proving that design outputs conform to specified design inputs through tests, inspections, and mathematical modeling." },
+    { name: "Failure Analysis", category: "lab", desc: "Investigating material fractures, sensor drifts, or structural yield failures to prevent device issues under physical load." },
+    { name: "Root Cause Analysis", category: "lab", desc: "Using structured diagnostic methodologies (e.g. fishbone, 5-Whys) to identify the fundamental cause of a failure or quality variation." },
+    { name: "Comparative Study Design", category: "lab", desc: "Creating objective experimental groups to compare materials, prototypes, or processes against current gold-standard controls." },
+
+    // 3. Computational & Quantitative Skills
+    { name: "Biomedical Data Analysis", category: "computational", desc: "Extracting features, identifying trends, and processing raw biological signal outputs using numerical tools." },
+    { name: "Scientific Computing", category: "computational", desc: "Using mathematical algorithms, scripting, and computing resources to solve complex physics, chemical, or biological problems." },
+    { name: "Python for Research", category: "computational", desc: "Writing custom Python scripts (NumPy, SciPy, Pandas) for data parsing, statistics, and automation of repetitive tasks." },
+    { name: "Data Visualization", category: "computational", desc: "Creating scientific plots, heatmaps, and publication-ready multi-axis figures using GraphPad, Origin, MATLAB, and Python." },
+    { name: "AI in Healthcare", category: "computational", desc: "Applying artificial intelligence, neural networks, and pattern recognition to medical imaging, biosignals, and patient diagnostics." },
+    { name: "Computational Modeling", category: "computational", desc: "Constructing mathematical simulations of physical systems (e.g. electrical interfaces, fluid mechanics) to predict properties." },
+    { name: "Signal Analysis", category: "computational", desc: "Filtering, digitizing, and analyzing physiological signals (EEG, ECG, pressure arrays) using Fourier transform and filter banks." },
+    { name: "Statistical Computing", category: "computational", desc: "Employing software applications (SPSS, R) to perform multi-variable regressions, survival analyses, and variance tests." },
+    { name: "Image Analysis", category: "computational", desc: "Processing digital microscopy slides, radiology films, or cellular photographs using thresholding and tracking (e.g. ImageJ)." },
+    { name: "Research Automation", category: "computational", desc: "Automating data acquisition, sensor telemetry collection, and file parsing to accelerate research productivity." },
+    { name: "Machine Learning Fundamentals", category: "computational", desc: "Utilizing classification, regression, and clustering algorithms to identify physiological abnormalities or label biomaterial characteristics." },
+    { name: "Computer Vision", category: "computational", desc: "Training algorithms to interpret digital image inputs, perform object detection, and segment bio-signals or cellular boundaries." },
+    { name: "Deep Learning for Biomedical Applications", category: "computational", desc: "Deploying deep convolutional networks (CNNs) and real-time detection models (YOLO) for anatomical or diagnostic identification." },
+
+    // 4. Medical Device & Regulatory Keywords
+    { name: "Medical Devices", category: "regulatory", desc: "Any instrument, software, or material intended for medical use, governed by strict efficacy and bio-safety guidelines." },
+    { name: "Product Development", category: "regulatory", desc: "The end-to-end pathway of medical device creation: from user needs, design requirements, and risk analysis to clinical trials and clearance." },
+    { name: "Design Thinking", category: "regulatory", desc: "A human-centered problem-solving process used to empathize with clinicians/patients and iterate on usable medical hardware." },
+    { name: "Validation & Verification", category: "regulatory", desc: "Verifying that a product was built correctly (to specs) and validating that it was the correct product (meets user/clinical needs)." },
+    { name: "Clinical Research Awareness", category: "regulatory", desc: "Understanding the ethical frameworks, Good Clinical Practice (GCP) guidelines, and design criteria of clinical trial studies." },
+    { name: "Risk Analysis", category: "regulatory", desc: "Systematic identification and mitigation of safety hazards associated with medical hardware, using ISO 14971/FMEA frameworks." },
+    { name: "Human Factors Consideration", category: "regulatory", desc: "Evaluating ergonomics, button configurations, and error potentials of user interfaces to ensure safe use by clinical operators." },
+    { name: "Prototype Development", category: "regulatory", desc: "Constructing physical mockups and active models to verify geometric tolerances, fit, and component-level layouts." },
+    { name: "ISO 13485 Awareness", category: "regulatory", desc: "Understanding the international standard specifying requirements for quality management systems specific to medical devices." },
+    { name: "FDA Regulatory Awareness", category: "regulatory", desc: "Familiarity with the US Food and Drug Administration pathways, including 510(k) notifications, PMA clearances, and Class classification." },
+    { name: "MDR Awareness", category: "regulatory", desc: "Understanding the European Medical Device Regulation (MDR) compliance structure, CE marking, and technical documentation requirements." },
+    { name: "Quality Systems", category: "regulatory", desc: "The organizational structure and quality controls verifying that medical devices conform to safety specifications during production." },
+    { name: "Technical Documentation", category: "regulatory", desc: "Compiling Design History Files (DHF), Device Master Records (DMR), and validation reports essential for regulatory review." },
+    { name: "Device Testing", category: "regulatory", desc: "Subjecting medical hardware to mechanical fatigue, electrical insulation, and electromagnetic compatibility tests." },
+    { name: "Performance Evaluation", category: "regulatory", desc: "Conducting benchtop and simulation studies to determine whether a device meets its claims regarding accuracy, yield, and durability." },
+    { name: "Biomechanical Evaluation", category: "regulatory", desc: "Analyzing body forces, kinetics, kinematics, and load distribution of orthotics or wearable systems." },
+    { name: "Electrical Safety Considerations", category: "regulatory", desc: "Mitigating electrical shock, leakage currents, isolation barriers, and electrostatic discharge risks in active medical devices (IEC 60601-1)." },
+    { name: "Functional Prototyping", category: "regulatory", desc: "Creating functional, sensor-integrated prototypes capable of logging physiological metrics and transmitting data in real-time." },
+    { name: "Wearable Biomedical Systems", category: "regulatory", desc: "On-body sensors logging metrics (plantar pressure, motion, body temperature) for continuous outpatient diagnostics." },
+
+    // 5. Domain-Specific Technical Terms (Thesis/Projects)
+    { name: "Conductive TPU", category: "thesis", desc: "Thermoplastic polyurethane doped with conductive elements (e.g. carbon particles) to produce flexible, stretchable electronic sensors." },
+    { name: "Electroplating", category: "thesis", desc: "Depositing a metallic coating onto a conductive substrate using an electrolytic current to increase electrical conductivity." },
+    { name: "Activated Carbon Coating", category: "thesis", desc: "Applying highly porous carbon layers to sensors to dramatically increase surface area, capacitance, and charge transmission." },
+    { name: "Pedobarography", category: "thesis", desc: "The measurement and clinical evaluation of pressure fields acting between the plantar surface of the foot and a supporting floor during locomotion." },
+    { name: "Plantar Pressure Analysis", category: "thesis", desc: "Extracting localized pressure curves beneath specific foot zones (heel, metatarsals) to analyze gait abnormalities or design orthotics." },
+    { name: "Gait Analysis", category: "thesis", desc: "The systematic study of human locomotion, using sensor telemetry and biomechanical metrics to evaluate walk cycles." },
+    { name: "Biomechanics", category: "thesis", desc: "Applying classic mechanics (forces, acceleration, stresses) to biological systems, specifically studying human locomotion and orthopedic loads." },
+    { name: "Pressure Distribution Mapping", category: "thesis", desc: "Visualizing tactile sensor grids as color-coded spatial pressure maps to identify focal points of stress during weight-bearing." },
+    { name: "ANSYS Simulation", category: "thesis", desc: "Utilizing ANSYS software to simulate physical stress distributions, structural deflections, and material behavior in virtual testing environments." },
+    { name: "Finite Element Analysis (FEA)", category: "thesis", desc: "A computational method to simulate how materials deform, fail, or distribute stress under specific complex loading conditions." },
+    { name: "Resistance Characterization", category: "thesis", desc: "Evaluating how a conductive material's electrical resistance changes dynamically under compression, flexion, or temperature fluctuations." },
+    { name: "Wearable Healthcare Technology", category: "thesis", desc: "Non-invasive electronic devices integrated into clothing or accessories to monitor biometric markers and support diagnostic decision-making." },
+    { name: "Reflexology-Based Design", category: "thesis", desc: "Structuring pressure sensors or therapeutic patterns on insoles corresponding to specific acupuncture and neurological zones." },
+    { name: "Grounding Interface Design", category: "thesis", desc: "Optimizing the grounding paths between body wearable sensors and the physical earth to dissipate static charges and establish signal references." },
+    { name: "Foot–Ground Electrical Interface", category: "thesis", desc: "Analyzing how electrical signals and micro-currents are transmitted or grounded during contact between a shoe sole and the ground." },
+
+    // 6. Tools & Software Section
+    { name: "Microsoft Excel", category: "tools", subcat: "Research & Analysis", desc: "Compiling raw lab logs, organizing datasets, calculating standard deviations, and plotting initial scientific trends." },
+    { name: "GraphPad Prism", category: "tools", subcat: "Research & Analysis", desc: "Leading scientific application used for statistical analysis, dose-response curve fitting, t-tests, and publishing-ready graphics." },
+    { name: "OriginPro", category: "tools", subcat: "Research & Analysis", desc: "High-end data analysis and graphing software for scientific plotting, peak integration, and curve-fitting modeling." },
+    { name: "SPSS", category: "tools", subcat: "Research & Analysis", desc: "Statistical package used for complex data management and descriptive/inferential statistical testing in clinical databases." },
+    { name: "MATLAB", category: "tools", subcat: "Research & Analysis", desc: "Programming and numeric computing environment optimized for bio-signal analysis, filtering, modeling, and custom algorithms." },
+    { name: "Python", category: "tools", subcat: "Research & Analysis", desc: "Programming language used in biomedical science for custom analytics scripts, automation, machine learning pipelines, and data processing." },
+    { name: "ImageJ", category: "tools", subcat: "Imaging & Visualization", desc: "Java-based image processing tool used to analyze pixel intensities, cell counts, and spatial dimensions in microscopy data." },
+    { name: "Canva", category: "tools", subcat: "Imaging & Visualization", desc: "Graphic platform used to format academic presentation slides, graphical abstracts, and research poster layouts." },
+    { name: "PowerPoint", category: "tools", subcat: "Imaging & Visualization", desc: "Creating clear, visually structured slide decks for academic defenses, lab meetings, and conference presentations." },
+    { name: "ANSYS", category: "tools", subcat: "Engineering & Design", desc: "Software for Finite Element Method (FEM) analysis used to simulate deformation and structural stress in orthotics and wearable prototypes." },
+    { name: "SolidWorks", category: "tools", subcat: "Engineering & Design", desc: "3D CAD modeling software used to design casing geometries and rapid prototyping components for diagnostic instruments." },
+    { name: "AutoCAD", category: "tools", subcat: "Engineering & Design", desc: "Computer-aided drafting software for creating detailed, dimensioned 2D engineering drawings and fabrication templates." },
+    { name: "HTML/CSS/JavaScript", category: "tools", subcat: "Programming & Technical", desc: "Core web languages used to build interactive user interfaces, web applications, and live portfolio systems." },
+    { name: "Scientific Computing", category: "tools", subcat: "Programming & Technical", desc: "Solving mathematical and physical representations of biological processes using numerical methods and custom algorithms." },
+    { name: "AI Research Tools", category: "tools", subcat: "Programming & Technical", desc: "Utilizing advanced AI models, code synthesizers, and literature review helpers to accelerate prototyping and research workflows." },
+    { name: "PubMed", category: "tools", subcat: "Literature & Documentation", desc: "Search engine maintained by the NCBI/NLM referencing millions of biomedical citations, journals, and online books." },
+    { name: "Google Scholar", category: "tools", subcat: "Literature & Documentation", desc: "Search engine indexing the full text or metadata of scholarly literature across an array of publishing formats and disciplines." },
+    { name: "Mendeley", category: "tools", subcat: "Literature & Documentation", desc: "Reference manager and academic social network used to organize citations, read papers, and generate bibliographies." },
+    { name: "Zotero", category: "tools", subcat: "Literature & Documentation", desc: "Free, open-source reference manager that acts as a personal research assistant, saving citations and linking metadata directly from browser pages." }
+];
+
+// --- Keyword Explorer Renderer Helpers ---
+function showKeywordDetails(keyword) {
+    const placeholder = document.getElementById('details-placeholder');
+    const content = document.getElementById('details-content');
+    const titleEl = document.getElementById('details-title');
+    const catEl = document.getElementById('details-category');
+    const descEl = document.getElementById('details-desc');
+    
+    if (!placeholder || !content || !titleEl || !catEl || !descEl) return;
+    
+    let catName = "";
+    switch(keyword.category) {
+        case "core": catName = "Core Biomedical Engineering"; break;
+        case "lab": catName = "Research & Lab Competency"; break;
+        case "computational": catName = "Computational & Quantitative"; break;
+        case "regulatory": catName = "Medical Device & Regulatory"; break;
+        case "thesis": catName = "Thesis & Special Domain"; break;
+        case "tools": catName = `Tools & Software • ${keyword.subcat}`; break;
+        default: catName = "Biomedical Skill";
+    }
+    
+    catEl.textContent = catName;
+    titleEl.textContent = keyword.name;
+    descEl.textContent = keyword.desc;
+    
+    placeholder.style.display = 'none';
+    content.style.display = 'block';
+}
+
+function clearKeywordDetails() {
+    const placeholder = document.getElementById('details-placeholder');
+    const content = document.getElementById('details-content');
+    
+    if (!placeholder || !content) return;
+    
+    placeholder.style.display = 'block';
+    content.style.display = 'none';
+}
+
+function createKeywordBadge(kw) {
+    const badge = document.createElement('div');
+    badge.className = 'keyword-badge';
+    badge.setAttribute('data-category', kw.category);
+    
+    let icon = "🧬";
+    switch(kw.category) {
+        case "core": icon = "🧬"; break;
+        case "lab": icon = "🔬"; break;
+        case "computational": icon = "💻"; break;
+        case "regulatory": icon = "📜"; break;
+        case "thesis": icon = "⚡"; break;
+        case "tools": icon = "🛠️"; break;
+    }
+    
+    badge.innerHTML = `<span class="badge-icon">${icon}</span> ${kw.name}`;
+    
+    badge.addEventListener('mouseenter', () => {
+        badge.classList.add('active-highlight');
+        showKeywordDetails(kw);
+    });
+    
+    badge.addEventListener('mouseleave', () => {
+        badge.classList.remove('active-highlight');
+        clearKeywordDetails();
+    });
+    
+    badge.addEventListener('click', () => {
+        const searchInput = document.getElementById('keyword-search');
+        if (searchInput) {
+            searchInput.value = kw.name;
+            const event = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(event);
+        }
+    });
+    
+    return badge;
+}
+
+function renderKeywords(filter = "all", searchQuery = "") {
+    const container = document.getElementById('keywords-container');
+    if (!container) return;
+    
+    container.innerHTML = "";
+    
+    let filtered = keywordsData.filter(kw => {
+        const matchesCategory = (filter === "all" || kw.category === filter);
+        const matchesSearch = searchQuery === "" || 
+            kw.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            kw.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (kw.subcat && kw.subcat.toLowerCase().includes(searchQuery.toLowerCase()));
+        return matchesCategory && matchesSearch;
+    });
+    
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="no-results-msg" style="width:100%; text-align:center; padding: 20px; color:var(--text-secondary); font-style:italic;">No matching keywords found. Try adjusting your search query.</div>';
+        return;
+    }
+    
+    if (filter === "tools" || (filter === "all" && searchQuery !== "" && filtered.every(k => k.category === "tools"))) {
+        const groups = {};
+        filtered.forEach(kw => {
+            const sub = kw.subcat || "General Tools";
+            if (!groups[sub]) groups[sub] = [];
+            groups[sub].push(kw);
+        });
+        
+        for (const subcat in groups) {
+            const titleEl = document.createElement('div');
+            titleEl.className = "tools-group-title";
+            titleEl.textContent = subcat;
+            container.appendChild(titleEl);
+            
+            const groupWrapper = document.createElement('div');
+            groupWrapper.className = "tools-group-wrapper";
+            groupWrapper.style.width = "100%";
+            groupWrapper.style.display = "flex";
+            groupWrapper.style.flexWrap = "wrap";
+            groupWrapper.style.gap = "10px";
+            
+            groups[subcat].forEach(kw => {
+                const badge = createKeywordBadge(kw);
+                groupWrapper.appendChild(badge);
+            });
+            container.appendChild(groupWrapper);
+        }
+    } else {
+        filtered.forEach(kw => {
+            const badge = createKeywordBadge(kw);
+            container.appendChild(badge);
+        });
+    }
+}
+
 // --- DOM Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Switchable About Me Tabs ---
+    const bioTabs = document.querySelectorAll('.bio-tab');
+    const bioVersions = document.querySelectorAll('.bio-version');
+    
+    bioTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const versionId = `bio-${tab.getAttribute('data-bio')}`;
+            
+            bioTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            bioVersions.forEach(version => {
+                if (version.id === versionId) {
+                    version.classList.add('active');
+                } else {
+                    version.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // --- Keyword Explorer Setup ---
+    const keywordSearchInput = document.getElementById('keyword-search');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    
+    let activeFilter = "all";
+    let activeSearch = "";
+    
+    if (keywordSearchInput) {
+        keywordSearchInput.addEventListener('input', (e) => {
+            activeSearch = e.target.value.trim();
+            if (clearSearchBtn) {
+                clearSearchBtn.style.display = activeSearch.length > 0 ? 'block' : 'none';
+            }
+            renderKeywords(activeFilter, activeSearch);
+        });
+    }
+    
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', () => {
+            if (keywordSearchInput) {
+                keywordSearchInput.value = "";
+                activeSearch = "";
+                clearSearchBtn.style.display = 'none';
+                renderKeywords(activeFilter, activeSearch);
+                keywordSearchInput.focus();
+            }
+        });
+    }
+    
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            filterTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeFilter = tab.getAttribute('data-filter');
+            renderKeywords(activeFilter, activeSearch);
+        });
+    });
+    
+    // Initial Keywords Render
+    renderKeywords(activeFilter, activeSearch);
+
     initTheme();
     initCarousel();
     initObservers();

@@ -73,10 +73,31 @@
             <div class="about-bento-grid">
                 <!-- Cell A: Main Bio -->
                 <div class="bento-card glass-panel bento-main-bio">
-                    <h3>Hello There, I'm Archit</h3>
-                    <p>I am a Biomedical Engineer driven by a passion to engineer technology that directly improves human healthcare. My academic and research path bridges the gap between biotechnology, engineering physics, and clinical translation.</p>
-                    <p>I completed my <strong>Master of Technology (M.Tech) in Biomedical Engineering at IIT Ropar (July 2024 - May 2026)</strong>. This intensive training empowered me to combine wet-lab biological protocols with computational tools and engineering methodologies.</p>
-                    <p>Alongside my M.Tech, I served as a <strong>Research Intern at IIT Delhi</strong> with <strong>mPRAGATI</strong> (MedTech Product Development Acceleration Gateway of India) from <strong>June 2025 - June 2026</strong>. Here, I worked on the frontlines of product translation—assisting in scaling medical diagnostic concepts toward clinical reality, navigating fabrication standards, and aligning projects with ISO 13485 requirements.</p>
+                    <div class="bio-header">
+                        <h3>About Me</h3>
+                        <div class="bio-tabs">
+                            <button class="bio-tab active" data-bio="professional">Professional</button>
+                            <button class="bio-tab" data-bio="research">Research & Innovation</button>
+                            <button class="bio-tab" data-bio="leadership">Intellectual Leadership</button>
+                        </div>
+                    </div>
+                    <div class="bio-content">
+                        <div class="bio-version active" id="bio-professional">
+                            <p>Biomedical Engineering postgraduate with interdisciplinary exposure across biomaterials, biomechanics, biomedical prototyping, translational research, and data-driven scientific analysis. Experienced in integrating engineering principles with biological systems through experimental design, prototype development, simulation-assisted evaluation, and research-oriented problem solving.</p>
+                            <p>Skilled in scientific literature analysis, laboratory methodologies, biomedical data interpretation, and technical documentation, with growing expertise in computational tools, medical device development workflows, and research visualization techniques. Demonstrates strong adaptability across wet-lab, analytical, and engineering environments, with the ability to contribute to research translation, innovation-oriented projects, and multidisciplinary collaborations.</p>
+                            <p>Interested in advancing impactful healthcare technologies through the integration of biomaterials, biomedical systems, biomechanics, AI-assisted research methodologies, and translational engineering approaches.</p>
+                        </div>
+                        <div class="bio-version" id="bio-research">
+                            <p>Biomedical Engineer with a strong inclination toward translational research, biomedical innovation, and interdisciplinary problem-solving at the intersection of engineering, biology, and healthcare technology. Academic and research exposure spans biomaterials, tissue engineering, biomechanics, biomedical prototyping, experimental design, and scientific data analysis.</p>
+                            <p>Experienced in working across the full research-development workflow including literature synthesis, conceptual design, simulation-assisted evaluation, prototype development, testing methodologies, and technical interpretation of experimental outcomes. Comfortable operating in both laboratory-driven and computational research environments, with familiarity in scientific computing, biomedical visualization tools, and engineering-based analytical approaches.</p>
+                            <p>Possesses a systems-level understanding of how biomedical technologies evolve from conceptual hypotheses into functional and clinically relevant solutions. Particularly interested in medical devices, wearable biomedical systems, mechanobiology-inspired innovation, and next-generation healthcare technologies integrating engineering intelligence with biological functionality.</p>
+                        </div>
+                        <div class="bio-version" id="bio-leadership">
+                            <p>Interdisciplinary Biomedical Engineer driven by the pursuit of translational healthcare innovation through the convergence of biomaterials, biomechanics, biomedical systems engineering, and data-centric scientific methodologies. Possesses a research-oriented mindset with experience spanning conceptual problem framing, experimental workflow design, engineering-assisted validation, scientific analysis, and prototype-oriented biomedical development.</p>
+                            <p>Demonstrates the ability to work across multiple layers of biomedical innovation — from biological understanding and material interaction to device functionality, systems integration, and analytical interpretation. Skilled in synthesizing scientific literature, developing structured research methodologies, conducting quantitative evaluations, and translating engineering principles into biologically relevant applications.</p>
+                            <p>Actively interested in emerging domains including regenerative technologies, wearable biomedical systems, mechanobiology, AI-assisted healthcare research, biomedical data science, and translational medical technologies aimed at improving human health outcomes. Brings a multidisciplinary approach to research and innovation, with the ability to bridge scientific inquiry, engineering execution, and technology-driven healthcare solutions.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Cell B: Career Trajectory (Timeline) -->
@@ -218,9 +239,51 @@
                 </div>
             </div>
             
+            <!-- Premium Keyword Architecture & Technical Stack Explorer -->
+            <div class="skills-explorer-wrapper glass-panel">
+                <div class="explorer-header">
+                    <h3>Keyword Architecture & Technical Stack Explorer</h3>
+                    <p>Filter or search through core competencies, laboratory techniques, computational skills, and specialized biomedical engineering keywords defining my research profile.</p>
+                    
+                    <div class="explorer-controls">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="keyword-search" placeholder="Search keywords, tools, or techniques...">
+                            <span class="clear-search" id="clear-search-btn" style="display: none;">&times;</span>
+                        </div>
+                        
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">All</button>
+                            <button class="filter-tab" data-filter="core">Core BME</button>
+                            <button class="filter-tab" data-filter="lab">Research & Lab</button>
+                            <button class="filter-tab" data-filter="computational">Computational</button>
+                            <button class="filter-tab" data-filter="regulatory">Device & Regulatory</button>
+                            <button class="filter-tab" data-filter="thesis">Thesis Domain</button>
+                            <button class="filter-tab" data-filter="tools">Tools & Software</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="explorer-body">
+                    <div class="keywords-container" id="keywords-container">
+                        <!-- Dynamic keyword tags are injected here by script.js -->
+                    </div>
+                </div>
+
+                <!-- Hover Details Pane -->
+                <div class="keyword-details-pane" id="keyword-details-pane">
+                    <div class="details-placeholder" id="details-placeholder">Hover over any keyword badge to view its contextual definition and significance.</div>
+                    <div class="details-content" id="details-content" style="display: none;">
+                        <span class="details-category" id="details-category">Category</span>
+                        <h4 class="details-title" id="details-title">Keyword Name</h4>
+                        <p class="details-desc" id="details-desc">Description of the keyword in context of biomedical engineering and research.</p>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Skill Interaction Legend -->
             <div class="interaction-legend">
-                <p>*Hover over cards to activate capability indices. Under active mentorship, all margins are designed for exponential scaling.</p>
+                <p>*Hover over progress cards or explore key-term badges to view technical capability indices. Under active mentorship, all margins are designed for exponential scaling.</p>
             </div>
         </section>
 
