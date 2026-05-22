@@ -295,24 +295,95 @@ function initCarousel() {
     const imageCarousel = document.getElementById('image-carousel');
     if (!imageCarousel) return;
 
-    // Load initial image
-    imageCarousel.innerHTML = `<img src="${imagePaths[currentIdx]}" alt="Archit's Bio Photo">`;
+    // Clear and build preloaded images
+    imageCarousel.innerHTML = '';
+    imagePaths.forEach((path, idx) => {
+        const img = document.createElement('img');
+        img.src = path;
+        img.alt = `Archit's Bio Photo ${idx + 1}`;
+        img.className = 'carousel-img' + (idx === 0 ? ' active' : '');
+        imageCarousel.appendChild(img);
+    });
 
-    function rotateImage() {
-        currentIdx = (currentIdx + 1) % imagePaths.length;
-        const img = imageCarousel.querySelector('img');
-        if (img) {
-            img.style.transform = 'scale(1.05)';
-            img.style.opacity = '0.3';
-            setTimeout(() => {
-                img.src = imagePaths[currentIdx];
-                img.style.opacity = '1';
-                img.style.transform = 'scale(1)';
-            }, 400);
+    // Create corner brackets for clinical monitor style
+    const brackets = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+    brackets.forEach(dir => {
+        const bracket = document.createElement('div');
+        bracket.className = `hud-bracket hud-${dir}`;
+        imageCarousel.appendChild(bracket);
+    });
+
+    // Create dot navigation
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'carousel-dots';
+    imagePaths.forEach((_, idx) => {
+        const dot = document.createElement('span');
+        dot.className = 'carousel-dot' + (idx === 0 ? ' active' : '');
+        dot.addEventListener('click', () => {
+            goToImage(idx);
+        });
+        dotsContainer.appendChild(dot);
+    });
+    imageCarousel.appendChild(dotsContainer);
+
+    // Create HUD overlay
+    const hudOverlay = document.createElement('div');
+    hudOverlay.className = 'carousel-hud';
+    hudOverlay.innerHTML = `
+        <div class="hud-top-bar">
+            <span class="hud-label">SYS_VIZ: CLINICAL_MONITOR</span>
+            <span class="hud-index" id="hud-index-display">01 / ${String(imagePaths.length).padStart(2, '0')}</span>
+        </div>
+        <div class="hud-bottom-bar">
+            <span class="hud-status">STATUS: SYSTEM_CYCLE</span>
+            <span class="hud-zoom" id="hud-zoom-display">MAG: 1.00x</span>
+        </div>
+    `;
+    imageCarousel.appendChild(hudOverlay);
+
+    let intervalId;
+
+    function goToImage(idx) {
+        const images = imageCarousel.querySelectorAll('.carousel-img');
+        const dots = imageCarousel.querySelectorAll('.carousel-dot');
+        const indexDisplay = document.getElementById('hud-index-display');
+        const zoomDisplay = document.getElementById('hud-zoom-display');
+        
+        if (images.length === 0) return;
+
+        // Remove active class
+        images.forEach(img => img.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // Set active image and dot
+        images[idx].classList.add('active');
+        dots[idx].classList.add('active');
+        currentIdx = idx;
+
+        // Update telemetry data
+        if (indexDisplay) {
+            indexDisplay.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(imagePaths.length).padStart(2, '0')}`;
         }
+        if (zoomDisplay) {
+            const zoomVals = ['1.00x', '1.05x', '1.08x', '1.12x', '1.15x', '1.03x'];
+            zoomDisplay.textContent = `MAG: ${zoomVals[idx % zoomVals.length]}`;
+        }
+
+        // Restart automatic cycle timer
+        resetInterval();
     }
 
-    setInterval(rotateImage, 5000);
+    function rotateImage() {
+        const nextIdx = (currentIdx + 1) % imagePaths.length;
+        goToImage(nextIdx);
+    }
+
+    function resetInterval() {
+        clearInterval(intervalId);
+        intervalId = setInterval(rotateImage, 5000);
+    }
+
+    resetInterval();
 }
 
 // --- Leaflet Map Setup ---
@@ -1537,24 +1608,69 @@ function clearKeywordDetails() {
 
 // --- DOM Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Switchable About Me Tabs ---
+    // --- Switchable About Me Tabs & sliding indicator ---
     const bioTabs = document.querySelectorAll('.bio-tab');
     const bioVersions = document.querySelectorAll('.bio-version');
+    const tabIndicator = document.querySelector('.bio-tab-indicator');
+    
+    function updateTabIndicator(activeTab) {
+        if (!tabIndicator || !activeTab) return;
+        tabIndicator.style.width = `${activeTab.offsetWidth}px`;
+        tabIndicator.style.left = `${activeTab.offsetLeft}px`;
+    }
+    
+    // Initialize indicator on load
+    const initialActiveTab = document.querySelector('.bio-tab.active');
+    if (initialActiveTab) {
+        // Wait a tiny bit for fonts/layout to settle
+        setTimeout(() => updateTabIndicator(initialActiveTab), 100);
+    }
+    
+    // Listen to window resizing
+    window.addEventListener('resize', () => {
+        const currentActiveTab = document.querySelector('.bio-tab.active');
+        if (currentActiveTab) updateTabIndicator(currentActiveTab);
+    });
     
     bioTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            const versionId = `bio-${tab.getAttribute('data-bio')}`;
+            const targetBio = tab.getAttribute('data-bio');
+            const versionId = `bio-${targetBio}`;
             
+            if (tab.classList.contains('active')) return;
+            
+            const activeVersion = document.querySelector('.bio-version.active');
+            const targetVersion = document.getElementById(versionId);
+            const bioContent = document.querySelector('.bio-content');
+            
+            if (!activeVersion || !targetVersion || !bioContent) return;
+            
+            // Phase 1: Lock Height
+            const startHeight = bioContent.offsetHeight;
+            bioContent.style.height = `${startHeight}px`;
+            
+            // Phase 2: Slide Tab Indicator
             bioTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
+            updateTabIndicator(tab);
             
-            bioVersions.forEach(version => {
-                if (version.id === versionId) {
-                    version.classList.add('active');
-                } else {
-                    version.classList.remove('active');
-                }
-            });
+            // Phase 3: Transition Text Description
+            activeVersion.classList.remove('active');
+            activeVersion.classList.add('exiting');
+            
+            targetVersion.classList.add('active');
+            
+            // Force a reflow
+            void targetVersion.offsetHeight;
+            
+            // Phase 4: Release Height
+            const endHeight = targetVersion.offsetHeight;
+            bioContent.style.height = `${endHeight}px`;
+            
+            setTimeout(() => {
+                activeVersion.classList.remove('exiting');
+                bioContent.style.height = '';
+            }, 400); // matches transition time
         });
     });
 
